@@ -1,0 +1,31 @@
+{
+  "name": "vinzy-ost",
+  "version": "1.0.0",
+  "description": "Vinzy OST functions repository",
+  "main": "index.js",
+  "repository": "ssh://git@github.com/falkonprods/vinzy-ost.git",
+  "author": "Boris <boris@websoftwar.es>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "lerna": "^2.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "nyc": "^11.2.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/tape packages/test/*.test.js | tap-spec",
+    "coverage": "./node_modules/.bin/nyc npm test"
+  }
+}

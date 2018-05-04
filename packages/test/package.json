@@ -1,0 +1,14 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "Shared lib code",
+  "main": "index.js",
+  "author": "boris@websoftwar.es",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "ost-client": "*",
+    "register": "*"
+  },
+  "devDependencies": {}
+}
