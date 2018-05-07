@@ -14,8 +14,7 @@ const baseUri = process.env['API_BASE_URL']
 
 function generateQueryString (endpoint, inputParams) {
   const queryParamsString = queryString.stringify(inputParams, {arrayFormat: 'bracket'}).replace(/%20/g, '+')
-  const stringToSign = endpoint + '?' + queryParamsString
-  return stringToSign
+  return endpoint + '?' + queryParamsString
 }
 
 function createTimeString () {
@@ -26,8 +25,8 @@ function createTimeString () {
 }
 
 function generateApiSignature (stringToSign, apiSecret) {
-  var buff = new Buffer.from(apiSecret, 'utf8')
-  var hmac = crypto.createHmac('sha256', buff)
+  let buff = new Buffer.from(apiSecret, 'utf8')
+  let hmac = crypto.createHmac('sha256', buff)
   hmac.update(stringToSign)
   return hmac.digest('hex')
 }
@@ -36,6 +35,11 @@ function OstClient (fetch) {
   this.client = fetch
 }
 
+/**
+ * @see https://dev.ost.com/docs/api_users_create.html
+ * @param name
+ * @returns {Promise<*>}
+ */
 OstClient.prototype.usersCreate = function (name) {
   const endpoint = '/users/create'
   let stringToSign = generateQueryString(endpoint, { api_key: apiKey, request_timestamp: createTimeString(), name: name })

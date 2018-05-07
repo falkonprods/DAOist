@@ -26,6 +26,7 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/tape packages/test/*.test.js | tap-spec",
-    "coverage": "./node_modules/.bin/nyc npm test"
+    "coverage": "./node_modules/.bin/nyc npm test",
+    "coverage:html": "./node_modules/.bin/nyc --reporter=html npm test"
   }
 }
