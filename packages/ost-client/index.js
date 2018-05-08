@@ -1,9 +1,3 @@
-
-const production = process.env.NODE_ENV === 'production'
-if (!production) {
-  require('dotenv').config()
-}
-
 const url = require('url')
 const crypto = require('crypto')
 const queryString = require('query-string')
