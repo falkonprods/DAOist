@@ -18,7 +18,9 @@ function FilterRegister(wineryName, contactName, email, password) {
   this.email = email
   this.password = password
   this.errors = []
+  this.mongo = mongo
 }
+
 FilterRegister.prototype.isValidEmail = function (email) {
   let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   if (re.test(email) === false) {
@@ -26,18 +28,34 @@ FilterRegister.prototype.isValidEmail = function (email) {
   }
   return this
 }
+
 FilterRegister.prototype.isEmpty = function (entity) {
   if (!entity || entity.length === 0) {
     this.errors.push(`${entity} is empty`)
   }
   return this
 }
+
 FilterRegister.prototype.hasPasswordLength = function (password) {
   if (!password || password.length < 8) {
     this.errors.push(`password is to short`)
   }
   return this
 }
+
+FilterRegister.prototype.uniqueWineryName = async function (wineryName) {
+  let connection = await this.mongo()
+  let db = await connection.db()
+  let collection = db.collection(DB_COLLECTION_USERS)
+  let users = await collection.find({ wineryName: wineryName }).toArray()
+  if (users.length > 0) {
+    this.errors.push(`${wineryName} is already used`)
+    connection.close()
+    throw new Error(JSON.stringify(this.errors))
+  }
+  return this
+}
+
 FilterRegister.prototype.validate = function () {
   this
     .isEmpty(this.wineryName)
@@ -55,9 +73,12 @@ function Register(ost, mongo) {
   this.ost = ost
   this.mongo = mongo
 }
+
 Register.prototype.saveWinery = async function ({wineryName, contactName, email, password}) {
   try {
-    new FilterRegister(wineryName, contactName, email, password).validate()
+    let filter = new FilterRegister(wineryName, contactName, email, password)
+    filter.validate()
+    await filter.uniqueWineryName(wineryName)
 
     let hash = bcrypt.hashSync(password, 10)
     let ostCreatedResponse = await this.ost.usersCreate(wineryName)
@@ -71,7 +92,6 @@ Register.prototype.saveWinery = async function ({wineryName, contactName, email,
     let db = await connection.db()
     let collection = db.collection(DB_COLLECTION_USERS)
     let result = await collection.insertOne(wineryData)
-    console.log(result.insertedId)
     if (result.insertedId) {
       connection.close()
       return `successfully inserted winery`
