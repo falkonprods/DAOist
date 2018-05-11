@@ -11,7 +11,8 @@
     "frontend:deploy": "aws s3 sync --acl public-read --delete ./dist/ s3://vinzy/dist & aws s3 sync --acl public-read --delete ./  s3://vinzy --exclude '*' --include 'index.html'"
   },
   "dependencies": {
-    "vue": "^2.5.11"
+    "vue": "^2.5.11",
+    "vue-router": "^3.0.1"
   },
   "browserslist": [
     "> 1%",
