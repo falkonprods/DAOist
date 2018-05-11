@@ -7,8 +7,9 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "ost-client": "*",
-    "register": "*"
+    "mongo": "file:../../packages/mongo",
+    "ost-client": "file:../../packages/ost-client",
+    "register": "file:../../packages/register"
   },
   "devDependencies": {}
 }

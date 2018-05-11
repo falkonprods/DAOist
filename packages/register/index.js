@@ -94,23 +94,37 @@ Register.prototype.saveWinery = async function ({wineryName, contactName, email,
     let result = await collection.insertOne(wineryData)
     if (result.insertedId) {
       connection.close()
-      return `successfully inserted winery`
+      return `successfully inserted winery: ${wineryName}`
     }
   } catch (error) {
-    return error
+    throw error
   }
 }
 
 let registerService = new Register(ostClient, mongo)
 
 module.exports.register = async (event) => {
-  let data = null
+  if (event.isBase64Encoded === true) {
+    event.body = Buffer.from(event.body, 'base64').toString('utf-8')
+  }
+
+  let response = {
+    statusCode: 400,
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: null,
+    isBase64Encoded: false
+  }
+
   try {
     if (event.body) {
-      data = await registerService.saveWinery(event.body)
+      response.statusCode = 200
+      response.body = JSON.stringify(await registerService.saveWinery(JSON.parse(event.body)))
     }
   } catch (error) {
-    return error
+    response.body = error.message
   }
-  return data
+
+  return response
 }

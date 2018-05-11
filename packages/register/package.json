@@ -1,15 +1,24 @@
 {
   "name": "register",
   "version": "1.0.0",
-  "description": "Shared lib code",
+  "description": "Vinzy register function",
   "main": "index.js",
   "author": "boris@websoftwar.es",
   "license": "MIT",
   "private": true,
   "dependencies": {
     "bcrypt": "^2.0.1",
-    "mongo": "*",
-    "ost-client": "*"
+    "mongo": "file:../../packages/mongo",
+    "ost-client": "file:../../packages/ost-client"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "claudia": "^4.0.0",
+    "envfile": "^2.3.0"
+  },
+  "scripts": {
+  "env:prepare" : "cat ../../.env.production | envfile2json > env.json",
+  "claudia:create": "cat ../../.env.production | envfile2json > env.json | claudia create --name vinzy-register --handler index.register --deploy-proxy-api --region us-east-1 --use-local-dependencies --set-env-from-json env.json",
+  "claudia:update": "cat ../../.env.production | envfile2json > env.json | claudia update --use-local-dependencies --set-env-from-json env.json",
+  "claudia:destroy": "claudia destroy"
+  }
 }

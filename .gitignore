@@ -6,3 +6,8 @@ packages/*/yarn-error.log
 node_modules
 .nyc_output
 coverage
+packages/*/env.json
+lerna-debug.log
+claudia.json
+.env.production
+packages/test/register.test.js

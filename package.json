@@ -7,11 +7,11 @@
   "author": "Boris <boris@websoftwar.es>",
   "license": "MIT",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
-  "dependencies": {
-    "lerna": "^2.11.0"
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": [
+      "**/register/**"
+    ]
   },
   "devDependencies": {
     "eslint": "^4.9.0",
@@ -22,11 +22,16 @@
     "eslint-plugin-standard": "^3.0.1",
     "nyc": "^11.2.1",
     "tap-spec": "^4.1.1",
-    "tape": "^4.8.0"
+    "tape": "^4.8.0",
+    "lerna": "^2.11.0"
   },
   "scripts": {
     "test": "./node_modules/.bin/tape packages/test/*.test.js | tap-spec",
     "coverage": "./node_modules/.bin/nyc npm test",
-    "coverage:html": "./node_modules/.bin/nyc --reporter=html npm test"
+    "coverage:html": "./node_modules/.bin/nyc --reporter=html npm test",
+    "lerna:claudia:create": "lerna run claudia:create",
+    "lerna:claudia:update": "lerna run claudia:update",
+    "lerna:claudia:destroy": "lerna run claudia:destroy",
+    "lerna:env:prepare": "lerna run env:prepare"
   }
 }
