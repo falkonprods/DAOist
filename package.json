@@ -32,6 +32,8 @@
     "lerna:claudia:create": "lerna run claudia:create",
     "lerna:claudia:update": "lerna run claudia:update",
     "lerna:claudia:destroy": "lerna run claudia:destroy",
-    "lerna:env:prepare": "lerna run env:prepare"
+    "lerna:frontend:dev": "lerna run frontend:dev",
+    "lerna:frontend:build": "lerna run frontend:build",
+    "lerna:frontend:deploy": "lerna run frontend:deploy"
   }
 }
