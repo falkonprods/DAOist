@@ -1,0 +1,79 @@
+body {
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #1a2034;
+}
+
+.vinzy-header {
+  height: 216px;
+  background-color:#242d45
+}
+
+.vinzy-header .navbar {
+  padding:50px 0 0 0;
+  margin:0 100px 0 100px;
+  background-color: transparent;
+}
+
+
+.vinzy-header .navbar .heading {
+  color:#fff;
+  font-variant: normal;
+  font-size:32px;
+}
+
+#app > section > div > section.vinzy-header > div > nav.navbar > div.navbar-end > div > a.button {
+border:0;
+background-color: #c11f59;
+border-radius:0;
+font-size:16px;
+color:#fff;
+}
+
+#app > section > div > section.vinzy-header > div > nav.navbar > div.navbar-end > a {
+  color:#fff;
+  font-size:16px;
+}
+
+#app > section > div > section.vinzy-header > div > nav.navbar > div.navbar-end > a:hover {
+  background: transparent;
+}
+
+.fa-bell {
+  color:#fff;
+  font-size:16px;
+}
+
+.vinzy-header .level-item {
+  width: 300px;
+  height: 100px;
+  margin:35px 0 0 100px;
+  background-image: linear-gradient(108deg, #fdb2a1, #eb6293);
+}
+
+.vinzy-header .level-item:last-of-type {
+  margin:35px 100px 0 100px;
+}
+
+.vinzy-header .level-item p {
+  color:#fff;
+}
+
+.vinzy-columns {
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background-color: #1f273d;
+}
+
+.vinzy-question  .icon{
+ border-radius: 50%;
+ background-color:#fff;
+ color:#333;
+ width: 35px;
+ height: 35px;
+ font-size:12px;
+ font-weight: normal;
+}
+
