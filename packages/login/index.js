@@ -52,7 +52,8 @@ module.exports.login = async (event) => {
   let response = {
     statusCode: 400,
     headers: {
-      'Content-type': 'application/json'
+      'Content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
     body: null,
     isBase64Encoded: false

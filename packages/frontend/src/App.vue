@@ -13,29 +13,7 @@
 
 
         </div>
-            <div class="navbar-end">
-                      <a class="navbar-item" href="">
-                 32 vincoins
-          </a>
-          <div class="navbar-item">
-          <a class="button  vinzy-buy-more">BUY MORE</a>
-          </div>
-          <div class="navbar-item">
-          <a href=""><span class="icon">
-            <i class="far fa-bell"></i>
-          </span>
-          </a>
-          </div>
-
-          <div class="navbar-item vinzy-question">
-          <a href=""><span class="icon is-small">
-           <i class="fas fa-question"></i>
-          </span>
-          </a>
-          </div>
-
-
-                  </div>
+           <HeaderProfileBar />
         </nav>
 
 
@@ -78,7 +56,7 @@
 </template>
 
 <script>
-import Header from "./components/Header";
+import HeaderProfileBar from "./components/HeaderProfileBar";
 export default {
   methods: {
     goBack() {
@@ -87,7 +65,7 @@ export default {
   },
   name: "app",
   components: {
-    Header
+    HeaderProfileBar
   }
 };
 </script>

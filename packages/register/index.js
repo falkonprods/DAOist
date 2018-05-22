@@ -3,7 +3,7 @@ if (!production) {
   require('dotenv').config()
 }
 
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const mongo = require('mongo')
 const fetch = require('node-fetch')
 const OstClient = require('ost-client')
@@ -56,6 +56,19 @@ FilterRegister.prototype.uniqueWineryName = async function (wineryName) {
   return this
 }
 
+FilterRegister.prototype.uniqueEmail = async function (email) {
+  let connection = await this.mongo()
+  let db = await connection.db()
+  let collection = db.collection(DB_COLLECTION_USERS)
+  let users = await collection.find({ email: email }).toArray()
+  if (users.length > 0) {
+    this.errors.push(`${email} is already used`)
+    connection.close()
+    throw new Error(JSON.stringify(this.errors))
+  }
+  return this
+}
+
 FilterRegister.prototype.validate = function () {
   this
     .isEmpty(this.wineryName)
@@ -79,6 +92,7 @@ Register.prototype.saveWinery = async function ({wineryName, contactName, email,
     let filter = new FilterRegister(wineryName, contactName, email, password)
     filter.validate()
     await filter.uniqueWineryName(wineryName)
+    await filter.uniqueEmail(email)
 
     let hash = bcrypt.hashSync(password, 10)
     let ostCreatedResponse = await this.ost.usersCreate(wineryName)
@@ -94,7 +108,10 @@ Register.prototype.saveWinery = async function ({wineryName, contactName, email,
     let result = await collection.insertOne(wineryData)
     if (result.insertedId) {
       connection.close()
-      return `successfully inserted winery: ${wineryName}`
+      return {
+        success: true,
+        message: `successfully inserted winery: ${wineryName}`
+      }
     }
   } catch (error) {
     throw error
@@ -111,7 +128,8 @@ module.exports.register = async (event) => {
   let response = {
     statusCode: 400,
     headers: {
-      'Content-type': 'application/json'
+      'Content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     },
     body: null,
     isBase64Encoded: false

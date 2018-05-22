@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "bcrypt": "^2.0.1",
+    "bcryptjs": "^2.0.1",
     "mongo": "file:../../packages/mongo",
     "ost-client": "file:../../packages/ost-client"
   },
