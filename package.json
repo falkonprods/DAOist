@@ -13,7 +13,8 @@
     ],
     "nohoist": [
       "**/register/**",
-      "**/login/**"
+      "**/login/**",
+      "**/facade-counters/**"
     ]
   },
   "devDependencies": {

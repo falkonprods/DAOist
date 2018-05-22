@@ -12,4 +12,5 @@ claudia.json
 .env.production
 packages/test/register.test.js
 packages/test/login.test.js
+packages/test/counter-facade.test.js
 
