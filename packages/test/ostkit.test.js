@@ -87,3 +87,14 @@ tape('OstClient.createUser failed authentication', (t) => {
     })
   t.end()
 })
+
+tape('test', (t) => {
+  const fetch = require('node-fetch')
+  const ost = new OstClient(fetch)
+  ost.token()
+    .then(resp => resp.json())
+    .then(x => console.log(x))
+    .catch(error => console.log(error))
+
+  t.end()
+})

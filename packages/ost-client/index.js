@@ -39,22 +39,18 @@ OstClient.prototype.usersCreate = function (name) {
   let stringToSign = generateQueryString(endpoint, { api_key: apiKey, request_timestamp: createTimeString(), name: name })
   let uri = stringToSign + '&signature=' + generateApiSignature(stringToSign, apiSecret)
   let params = URL.parse(uri).query
-  return this.client(baseUri + endpoint, { method: 'POST', body: new url.URLSearchParams(params) })
+  return this.client(baseUri + endpoint, { method: 'POST', body: new URL.URLSearchParams(params) })
 }
 
 /**
- * @see https://dev.ost.com/docs/api_token.html
+ * @see https://dev.ost.com/docs/create_token.html
  * @returns {Promise<*>}
  */
 OstClient.prototype.token = function () {
-  const endpoint = '/users/create'
+  const endpoint = '/token'
   let stringToSign = generateQueryString(endpoint, { api_key: apiKey, request_timestamp: createTimeString() })
   let uri = stringToSign + '&signature=' + generateApiSignature(stringToSign, apiSecret)
-  let params = URL.parse(uri).query
-  let url = new URL(baseUri + endpoint)
-  url.search = new url.URLSearchParams(params)
-
-  return this.client(url, { method: 'GET' })
+  return this.client(baseUri + uri, { method: 'GET' })
 }
 
 module.exports = OstClient

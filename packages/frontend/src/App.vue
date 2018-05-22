@@ -16,27 +16,7 @@
            <HeaderProfileBar />
         </nav>
 
-
-<nav class="level">
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="title">3442456</p>
-      <p class="heading">Vincoins in system </p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="title">233</p>
-      <p class="heading">Wineries</p>
-    </div>
-  </div>
-  <div class="level-item has-text-centered">
-    <div>
-      <p class="title">5</p>
-      <p class="heading">Active ideas</p>
-    </div>
-  </div>
-</nav>
+             <HeaderCounter />
 
           </div>
       </section>
@@ -57,6 +37,7 @@
 
 <script>
 import HeaderProfileBar from "./components/HeaderProfileBar";
+import HeaderCounter from "./components/HeaderCounter";
 export default {
   methods: {
     goBack() {
@@ -65,7 +46,8 @@ export default {
   },
   name: "app",
   components: {
-    HeaderProfileBar
+    HeaderProfileBar,
+    HeaderCounter
   }
 };
 </script>

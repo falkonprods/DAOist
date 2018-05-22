@@ -36,7 +36,7 @@ FacadeCounters.prototype.getVincoins = async function () {
       throw new Error(ostToken.err.msg)
     }
 
-    return ostToken.total_supply
+    return ostToken.data.token.total_supply
   } catch (error) {
     throw new Error(error.message)
   }
@@ -56,10 +56,11 @@ module.exports.facadeCounters = async (event) => {
   }
 
   try {
+    const [wineries, vincoins] = await Promise.all([facadeCounters.getWineries(), facadeCounters.getVincoins()])
     response.statusCode = 200
     response.body = JSON.stringify({
-      wineries: await facadeCounters.getWineries(),
-      vincoins: await facadeCounters.getVincoins(),
+      wineries: wineries,
+      vincoins: vincoins,
       ideas: 0
     })
   } catch (error) {
