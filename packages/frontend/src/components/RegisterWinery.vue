@@ -1,6 +1,8 @@
 <template>
-<div>
+<div class="columns is-centered">
+  <div class="container">
   <form @submit.prevent="register">
+        <br />
     <input required type="text" name="wineryName" placeholder="Enter winery name" v-model="wineryName">
     <br />
     <input required type="text" name="contactName" placeholder="Enter contact name" v-model="contactName">
@@ -12,6 +14,7 @@
    <button type="submit">Register</button>
     </form>
     </div>
+</div>
 </template>
 
 <script>
