@@ -4602,7 +4602,7 @@ osenv@^0.1.4:
     os-tmpdir "^1.0.0"
 
 "ost-client@file:packages/ost-client":
-  version "1.0.1"
+  version "1.0.5"
   dependencies:
     dotenv "^5.0.1"
     node-fetch "^2.1.2"

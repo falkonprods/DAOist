@@ -8,7 +8,7 @@ const bcrypt = require('bcryptjs')
 const mongo = require('mongo')
 const DB_COLLECTION_USERS = 'users'
 
-const JWT_EXPIRATION_TIME = '5m'
+const JWT_EXPIRATION_TIME = '24h'
 
 function Login(email, password) {
   this.email = email

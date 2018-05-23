@@ -9,7 +9,7 @@
 
 
                       <a v-if="isLoggedIn" class="navbar-item" href="">
-                 32 vincoins
+                 {{ tokenBalance }} VINCOINS
           </a>
 
           <div v-if="isLoggedIn" class="navbar-item">
@@ -31,14 +31,37 @@
 
 <script>
 import Vuex from 'vuex'
+import axios from 'axios'
+
+
 export default {
+
   name: "HeaderProfileBar",
   methods: {
-    ...Vuex.mapActions(["logout"])
+    ...Vuex.mapActions(["logout"]),
   },
   computed: {
     ...Vuex.mapGetters(["isLoggedIn"])
-  }
+  },
+   data() {
+    return {
+      tokenBalance:null
+      }
+  },
+
+  // Fetches posts when the component is created.
+  created() {
+      if(this.isLoggedIn) {
+      axios.get(`https://m1ufhri369.execute-api.us-east-1.amazonaws.com/latest?token=${localStorage.getItem('token')}`, {
+      })
+      .then(response => {
+        this.tokenBalance = response.data.tokenBalance
+      })
+      .catch(e => {
+        console.log(e)
+      })
+    }
+  },
 };
 </script>
 

@@ -10,7 +10,8 @@
     "login": "file:../../packages/login",
     "mongo": "file:../../packages/mongo",
     "ost-client": "file:../../packages/ost-client",
-    "register": "file:../../packages/register"
+    "register": "file:../../packages/register",
+    "dotenv" : "^5.0.1"
   },
   "devDependencies": {}
 }

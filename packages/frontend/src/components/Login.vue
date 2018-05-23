@@ -7,7 +7,7 @@
        <br />
    <input required type="password" placeholder="password" v-model="password">
        <br />
-   <button type="submit">Login</button>
+   <button class="button" type="submit">Login</button>
   </form>
 </div>
 </div>
@@ -34,3 +34,19 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+button {
+  margin:10px 0;
+  border:0;
+background-color: #c11f59;
+border-radius:0;
+font-size:16px;
+color:#fff;
+}
+
+button:hover {
+    color:#fff;
+}
+</style>
+

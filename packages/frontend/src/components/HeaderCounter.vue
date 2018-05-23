@@ -37,7 +37,6 @@ export default {
   created() {
     axios.get(`https://rresc2hcz5.execute-api.us-east-1.amazonaws.com/latest`)
     .then(response => {
-      console.log(response)
       this.wineries = response.data.wineries
       this.vincoins = Math.trunc( response.data.vincoins  );
       this.ideas = response.data.ideas

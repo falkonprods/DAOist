@@ -11,7 +11,7 @@
     <br />
     <input required type="password" name="password" placeholder="Enter password"  v-model="password">
     <br />
-   <button type="submit">Register</button>
+   <button class="button" type="submit">Register</button>
     </form>
     </div>
 </div>
@@ -46,10 +46,22 @@ export default {
   }
 };
 </script>
-</script>
+
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+button {
+  margin:10px 0;
+  border:0;
+background-color: #c11f59;
+border-radius:0;
+font-size:16px;
+color:#fff;
+}
+
+button:hover {
+    color:#fff;
+}
 </style>
 

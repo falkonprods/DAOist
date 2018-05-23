@@ -13,4 +13,5 @@ claudia.json
 packages/test/register.test.js
 packages/test/login.test.js
 packages/test/counter-facade.test.js
-
+packages/test/profile-facade.test.js
+packages/test/ostkit.test.json
