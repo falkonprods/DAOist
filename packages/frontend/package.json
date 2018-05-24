@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bulma": "^0.7.1",
+    "faker": "^4.1.0",
     "vue": "^2.5.11",
     "vue-axios": "^2.1.1",
     "vue-router": "^3.0.1",

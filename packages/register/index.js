@@ -114,15 +114,14 @@ Register.prototype.saveWinery = async function ({wineryName, contactName, email,
     if (result.insertedId) {
       connection.close()
 
-      await transactionService
+      let result = await transactionService
         .execute(
           { from_user_id: process.env.COMPANY_UUID, to_user_id: ostCreated.data.user.id, action_id: ACTION_ID }
         )
-
+        console.log(result)
       return {
         success: true,
-        message: `successfully inserted winery: ${wineryName}`,
-        data: wineryData
+        message: `successfully inserted winery: ${wineryName}`
       }
     }
   } catch (error) {
@@ -150,7 +149,9 @@ module.exports.register = async (event) => {
   try {
     if (event.body) {
       response.statusCode = 200
-      response.body = JSON.stringify(await registerService.saveWinery(JSON.parse(event.body)))
+      let result = JSON.stringify(await registerService.saveWinery(JSON.parse(event.body)))
+      console.log(result)
+      response.body = result
     }
   } catch (error) {
     console.log(error)

@@ -2,7 +2,7 @@ const faker = require('faker')
 const register = require('../register').register
 let i = 0
 
-faker.locale = "en";
+faker.locale = "fr";
 
 const production = process.env.NODE_ENV === 'production'
 if (!production) {
@@ -20,7 +20,7 @@ function f1 () {
   }
 
   register(event)
-    .then(response => console.log(JSON.parse(response.body).data.ost.id))
+    .then(response => console.log(response.body))
     .catch(error => console.error(error))
 }
 function f () {
