@@ -1,0 +1,17 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "Shared lib code",
+  "main": "index.js",
+  "author": "boris@websoftwar.es",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "login": "file:../../packages/login",
+    "mongo": "file:../../packages/mongo",
+    "ost-client": "file:../../packages/ost-client",
+    "register": "file:../../packages/register",
+    "dotenv" : "^5.0.1"
+  },
+  "devDependencies": {}
+}

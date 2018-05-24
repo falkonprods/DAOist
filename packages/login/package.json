@@ -1,0 +1,22 @@
+{
+  "name": "login",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.2.1",
+    "mongo": "file:../../packages/mongo"
+  },
+  "devDependencies": {
+    "claudia": "^4.0.0",
+    "envfile": "^2.3.0"
+  },
+  "scripts": {
+    "env:prepare": "cat ../../.env.production | envfile2json > env.json",
+    "claudia:create": "cat ../../.env.production | envfile2json > env.json | claudia create --name vinzy-login --handler index.login --deploy-proxy-api --region us-east-1 --use-local-dependencies --set-env-from-json env.json",
+    "claudia:update": "cat ../../.env.production | envfile2json > env.json | claudia update --use-local-dependencies --set-env-from-json env.json",
+    "claudia:destroy": "claudia destroy"
+  }
+}
