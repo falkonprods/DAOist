@@ -39,7 +39,6 @@ export default {
     .then(response => {
       this.wineries = response.data.wineries
       this.vincoins = Math.trunc( response.data.vincoins  );
-      this.ideas = response.data.ideas
     })
     .catch(e => {
       console.log(e)
