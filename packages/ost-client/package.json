@@ -1,6 +1,6 @@
 {
   "name": "ost-client",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Shared api client code",
   "main": "index.js",
   "author": "boris@websoftwar.es",

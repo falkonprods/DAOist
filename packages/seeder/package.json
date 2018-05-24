@@ -1,0 +1,17 @@
+{
+  "name": "seeder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ostdotcom/ost-sdk-js": "^1.0.0",
+    "dotenv": "^5.0.1",
+    "faker": "^4.1.0",
+    "mongo": "file:../../packages/mongo",
+    "node-fetch": "^2.1.2",
+    "ost-client": "file:../../packages/ost-client"
+  }
+}

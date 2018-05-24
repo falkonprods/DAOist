@@ -35,7 +35,7 @@ function OstClient(fetch) {
  * @returns {Promise<*>}
  */
 OstClient.prototype.usersCreate = function (name) {
-  const endpoint = '/users/create'
+  const endpoint = '/users'
   let stringToSign = generateQueryString(endpoint, { api_key: apiKey, request_timestamp: createTimeString(), name: name })
   let uri = stringToSign + '&signature=' + generateApiSignature(stringToSign, apiSecret)
   let params = URL.parse(uri).query

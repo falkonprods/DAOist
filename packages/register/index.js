@@ -7,10 +7,14 @@ const bcrypt = require('bcryptjs')
 const mongo = require('mongo')
 const fetch = require('node-fetch')
 const OstClient = require('ost-client')
+const OSTSDK = require('@ostdotcom/ost-sdk-js')
 
+const ACTION_ID = 32101
 const DB_COLLECTION_USERS = 'users'
 
 let ostClient = new OstClient(fetch)
+const ostObj = new OSTSDK({ apiKey: process.env.API_KEY, apiSecret: process.env.API_SECRET, apiEndpoint: process.env.API_BASE_URL })
+const transactionService = ostObj.services.transactions
 
 function FilterRegister(wineryName, contactName, email, password) {
   this.wineryName = wineryName
@@ -93,24 +97,32 @@ Register.prototype.saveWinery = async function ({wineryName, contactName, email,
     filter.validate()
     await filter.uniqueWineryName(wineryName)
     await filter.uniqueEmail(email)
-
     let hash = bcrypt.hashSync(password, 10)
     let ostCreatedResponse = await this.ost.usersCreate(wineryName)
     let ostCreated = await ostCreatedResponse.json()
 
     if (ostCreated.success === false) {
+      console.log(ostCreated.err)
       throw new Error(ostCreated.err.msg)
     }
-    const wineryData = { wineryName, contactName, email, hash, ost: ostCreated.data.economy_users[0] }
+
+    const wineryData = { wineryName, contactName, email, hash, ost: ostCreated.data.user }
     let connection = await this.mongo()
     let db = await connection.db()
     let collection = db.collection(DB_COLLECTION_USERS)
     let result = await collection.insertOne(wineryData)
     if (result.insertedId) {
       connection.close()
+
+      await transactionService
+        .execute(
+          { from_user_id: process.env.COMPANY_UUID, to_user_id: ostCreated.data.user.id, action_id: ACTION_ID }
+        )
+
       return {
         success: true,
-        message: `successfully inserted winery: ${wineryName}`
+        message: `successfully inserted winery: ${wineryName}`,
+        data: wineryData
       }
     }
   } catch (error) {
@@ -141,6 +153,7 @@ module.exports.register = async (event) => {
       response.body = JSON.stringify(await registerService.saveWinery(JSON.parse(event.body)))
     }
   } catch (error) {
+    console.log(error)
     response.body = error.message
   }
 
