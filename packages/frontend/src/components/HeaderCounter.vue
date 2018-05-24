@@ -30,7 +30,7 @@ export default {
     return {
       wineries:null,
       vincoins:null,
-      ideas: null}
+      ideas: 125}
   },
 
   // Fetches posts when the component is created.
