@@ -19,5 +19,8 @@
   "claudia:create": "cat ../../.env.production | envfile2json > env.json | claudia create --name vinzy-facadeProfile --handler index.facadeProfile --deploy-proxy-api --region us-east-1 --use-local-dependencies --set-env-from-json env.json",
   "claudia:update": "cat ../../.env.production | envfile2json > env.json | claudia update --use-local-dependencies --set-env-from-json env.json",
   "claudia:destroy": "claudia destroy"
+  },
+  "engines": {
+    "node": ">=8.6.0"
   }
 }
