@@ -13,7 +13,11 @@ const ACTION_ID = 32101
 const DB_COLLECTION_USERS = 'users'
 
 let ostClient = new OstClient(fetch)
-const ostObj = new OSTSDK({ apiKey: process.env.API_KEY, apiSecret: process.env.API_SECRET, apiEndpoint: process.env.API_BASE_URL })
+const ostObj = new OSTSDK({
+  apiKey: process.env.API_KEY,
+  apiSecret: process.env.API_SECRET,
+  apiEndpoint: process.env.API_BASE_URL,
+})
 const transactionService = ostObj.services.transactions
 
 function FilterRegister(wineryName, contactName, email, password) {
@@ -25,29 +29,29 @@ function FilterRegister(wineryName, contactName, email, password) {
   this.mongo = mongo
 }
 
-FilterRegister.prototype.isValidEmail = function (email) {
-  let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+FilterRegister.prototype.isValidEmail = function(email) {
+  let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   if (re.test(email) === false) {
     this.errors.push(`${email} is invalid`)
   }
   return this
 }
 
-FilterRegister.prototype.isEmpty = function (entity) {
+FilterRegister.prototype.isEmpty = function(entity) {
   if (!entity || entity.length === 0) {
     this.errors.push(`${entity} is empty`)
   }
   return this
 }
 
-FilterRegister.prototype.hasPasswordLength = function (password) {
+FilterRegister.prototype.hasPasswordLength = function(password) {
   if (!password || password.length < 8) {
-    this.errors.push(`password is to short`)
+    this.errors.push('password is to short')
   }
   return this
 }
 
-FilterRegister.prototype.uniqueWineryName = async function (wineryName) {
+FilterRegister.prototype.uniqueWineryName = async function(wineryName) {
   let connection = await this.mongo()
   let db = await connection.db()
   let collection = db.collection(DB_COLLECTION_USERS)
@@ -60,7 +64,7 @@ FilterRegister.prototype.uniqueWineryName = async function (wineryName) {
   return this
 }
 
-FilterRegister.prototype.uniqueEmail = async function (email) {
+FilterRegister.prototype.uniqueEmail = async function(email) {
   let connection = await this.mongo()
   let db = await connection.db()
   let collection = db.collection(DB_COLLECTION_USERS)
@@ -73,9 +77,8 @@ FilterRegister.prototype.uniqueEmail = async function (email) {
   return this
 }
 
-FilterRegister.prototype.validate = function () {
-  this
-    .isEmpty(this.wineryName)
+FilterRegister.prototype.validate = function() {
+  this.isEmpty(this.wineryName)
     .isEmpty(this.contactName)
     .isEmpty(this.email)
     .isValidEmail(this.email)
@@ -91,7 +94,7 @@ function Register(ost, mongo) {
   this.mongo = mongo
 }
 
-Register.prototype.saveWinery = async function ({wineryName, contactName, email, password}) {
+Register.prototype.saveWinery = async function({ wineryName, contactName, email, password }) {
   try {
     let filter = new FilterRegister(wineryName, contactName, email, password)
     filter.validate()
@@ -114,14 +117,15 @@ Register.prototype.saveWinery = async function ({wineryName, contactName, email,
     if (result.insertedId) {
       connection.close()
 
-      let result = await transactionService
-        .execute(
-          { from_user_id: process.env.COMPANY_UUID, to_user_id: ostCreated.data.user.id, action_id: ACTION_ID }
-        )
-        console.log(result)
+      let result = await transactionService.execute({
+        from_user_id: process.env.COMPANY_UUID,
+        to_user_id: ostCreated.data.user.id,
+        action_id: ACTION_ID,
+      })
+      console.log(result)
       return {
         success: true,
-        message: `successfully inserted winery: ${wineryName}`
+        message: `successfully inserted winery: ${wineryName}`,
       }
     }
   } catch (error) {
@@ -131,7 +135,7 @@ Register.prototype.saveWinery = async function ({wineryName, contactName, email,
 
 let registerService = new Register(ostClient, mongo)
 
-module.exports.register = async (event) => {
+module.exports.register = async event => {
   if (event.isBase64Encoded === true) {
     event.body = Buffer.from(event.body, 'base64').toString('utf-8')
   }
@@ -140,10 +144,10 @@ module.exports.register = async (event) => {
     statusCode: 400,
     headers: {
       'Content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
     },
     body: null,
-    isBase64Encoded: false
+    isBase64Encoded: false,
   }
 
   try {

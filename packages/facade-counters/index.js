@@ -15,7 +15,7 @@ function FacadeCounters(ost, mongo) {
   this.mongo = mongo
 }
 
-FacadeCounters.prototype.getWineries = async function () {
+FacadeCounters.prototype.getWineries = async function() {
   try {
     let connection = await this.mongo()
     let db = await connection.db()
@@ -27,7 +27,7 @@ FacadeCounters.prototype.getWineries = async function () {
   }
 }
 
-FacadeCounters.prototype.getVincoins = async function () {
+FacadeCounters.prototype.getVincoins = async function() {
   try {
     let ostTokenResponse = await this.ost.token()
     let ostToken = await ostTokenResponse.json()
@@ -44,27 +44,30 @@ FacadeCounters.prototype.getVincoins = async function () {
 
 let facadeCounters = new FacadeCounters(ostClient, mongo)
 
-module.exports.facadeCounters = async (event) => {
+module.exports.facadeCounters = async () => {
   let response = {
     statusCode: 400,
     headers: {
       'Content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
     },
     body: null,
-    isBase64Encoded: false
+    isBase64Encoded: false,
   }
 
   try {
-    const [wineries, vincoins] = await Promise.all([facadeCounters.getWineries(), facadeCounters.getVincoins()])
+    const [wineries, vincoins] = await Promise.all([
+      facadeCounters.getWineries(),
+      facadeCounters.getVincoins(),
+    ])
     response.statusCode = 200
     response.body = JSON.stringify({
       wineries: wineries,
       vincoins: vincoins,
-      ideas: 0
+      ideas: 0,
     })
   } catch (error) {
-    response.body = JSON.stringify({error: error.message})
+    response.body = JSON.stringify({ error: error.message })
   }
 
   return response
