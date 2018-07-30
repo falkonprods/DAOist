@@ -14,11 +14,11 @@ function FacadeProfile(ost, jwt) {
   this.jwt = jwt
 }
 
-FacadeProfile.prototype.getUserIdFromToken = async function (token) {
+FacadeProfile.prototype.getUserIdFromToken = async function(token) {
   return this.jwt.verify(token, process.env.JWT_SECRET).user.ost.id
 }
 
-FacadeProfile.prototype.getTokenBalanceByJwtToken = async function (jwtToken) {
+FacadeProfile.prototype.getTokenBalanceByJwtToken = async function(jwtToken) {
   const response = await ostClient.usersRetrieve(await this.getUserIdFromToken(jwtToken))
   const result = await response.json()
 
@@ -31,24 +31,26 @@ FacadeProfile.prototype.getTokenBalanceByJwtToken = async function (jwtToken) {
 
 const facadeProfileService = new FacadeProfile(ostClient, jwt)
 
-module.exports.facadeProfile = async (event) => {
+module.exports.facadeProfile = async event => {
   const token = event.queryStringParameters.token
 
   let response = {
     statusCode: 400,
     headers: {
       'Content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
     },
     body: null,
-    isBase64Encoded: false
+    isBase64Encoded: false,
   }
 
   try {
     response.statusCode = 200
-    response.body = JSON.stringify({tokenBalance: await facadeProfileService.getTokenBalanceByJwtToken(token)})
+    response.body = JSON.stringify({
+      tokenBalance: await facadeProfileService.getTokenBalanceByJwtToken(token),
+    })
   } catch (error) {
-    response.body = JSON.stringify({error: error.message})
+    response.body = JSON.stringify({ error: error.message })
   }
 
   return response

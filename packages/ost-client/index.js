@@ -7,7 +7,9 @@ const apiSecret = process.env['API_SECRET']
 const baseUri = process.env['API_BASE_URL']
 
 function generateQueryString(endpoint, inputParams) {
-  const queryParamsString = queryString.stringify(inputParams, { arrayFormat: 'bracket' }).replace(/%20/g, '+')
+  const queryParamsString = queryString
+    .stringify(inputParams, { arrayFormat: 'bracket' })
+    .replace(/%20/g, '+')
   return endpoint + '?' + queryParamsString
 }
 
@@ -34,22 +36,29 @@ function OstClient(fetch) {
  * @param name
  * @returns {Promise<*>}
  */
-OstClient.prototype.usersCreate = function (name) {
+OstClient.prototype.usersCreate = function(name) {
   const endpoint = '/users'
-  let stringToSign = generateQueryString(endpoint, { api_key: apiKey, request_timestamp: createTimeString(), name: name })
+  let stringToSign = generateQueryString(endpoint, {
+    api_key: apiKey,
+    request_timestamp: createTimeString(),
+    name: name,
+  })
   let uri = stringToSign + '&signature=' + generateApiSignature(stringToSign, apiSecret)
   let params = URL.parse(uri).query
   return this.client(baseUri + endpoint, { method: 'POST', body: new URL.URLSearchParams(params) })
 }
 
 /**
-* @see https://dev.ost.com/docs/api_users_retrieve.html
-* @param id
-* @returns {Promise<*>}
-*/
-OstClient.prototype.usersRetrieve = function (id) {
+ * @see https://dev.ost.com/docs/api_users_retrieve.html
+ * @param id
+ * @returns {Promise<*>}
+ */
+OstClient.prototype.usersRetrieve = function(id) {
   const endpoint = `/users/${id}`
-  let stringToSign = generateQueryString(endpoint, { api_key: apiKey, request_timestamp: createTimeString() })
+  let stringToSign = generateQueryString(endpoint, {
+    api_key: apiKey,
+    request_timestamp: createTimeString(),
+  })
   let uri = stringToSign + '&signature=' + generateApiSignature(stringToSign, apiSecret)
   return this.client(baseUri + uri, { method: 'GET' })
 }
@@ -58,9 +67,12 @@ OstClient.prototype.usersRetrieve = function (id) {
  * @see https://dev.ost.com/docs/create_token.html
  * @returns {Promise<*>}
  */
-OstClient.prototype.token = function () {
+OstClient.prototype.token = function() {
   const endpoint = '/token'
-  let stringToSign = generateQueryString(endpoint, { api_key: apiKey, request_timestamp: createTimeString() })
+  let stringToSign = generateQueryString(endpoint, {
+    api_key: apiKey,
+    request_timestamp: createTimeString(),
+  })
   let uri = stringToSign + '&signature=' + generateApiSignature(stringToSign, apiSecret)
   return this.client(baseUri + uri, { method: 'GET' })
 }

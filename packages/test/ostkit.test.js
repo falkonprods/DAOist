@@ -4,26 +4,26 @@ if (!production) {
 }
 const OstClient = require('../ost-client')
 const tape = require('tape')
-const baseUri = process.env['API_BASE_URL']
-const createUserSuccessResponse = `
-{
-  "success": true,
-  "data": {
-    "result_type": "economy_users",
-    "economy_users": [
-      {
-        "id": "574b456d-5da6-4353-ad7c-9b70893e757b",
-        "uuid": "574b456d-5da6-4353-ad7c-9b70893e757b",
-        "name": "Boris",
-        "total_airdropped_tokens": 0,
-        "token_balance": 0
-      }
-    ],
-    "meta": {
-      "next_page_payload": {}
-    }
-  }
-}`
+//const baseUri = process.env['API_BASE_URL']
+//const createUserSuccessResponse = `
+//{
+//  "success": true,
+//  "data": {
+//    "result_type": "economy_users",
+//    "economy_users": [
+//      {
+//        "id": "574b456d-5da6-4353-ad7c-9b70893e757b",
+//        "uuid": "574b456d-5da6-4353-ad7c-9b70893e757b",
+//        "name": "Boris",
+//        "total_airdropped_tokens": 0,
+//        "token_balance": 0
+//      }
+//    ],
+//    "meta": {
+//      "next_page_payload": {}
+//    }
+//  }
+//}`
 
 // const fetchMockSuccess = (t, expected) => (uri, data = {}) => {
 //   t.equal(uri, expected.uri, `Assert actual: ${uri} matches expected: ${expected.uri}`)
@@ -99,10 +99,11 @@ const createUserSuccessResponse = `
 //   t.end()
 // })
 
-tape('test', (t) => {
+tape('test', t => {
   const fetch = require('node-fetch')
   const ost = new OstClient(fetch)
-  ost.usersRetrieve('aef6b267-c06f-4260-b2b7-9d6255f6504d')
+  ost
+    .usersRetrieve('aef6b267-c06f-4260-b2b7-9d6255f6504d')
     .then(resp => resp.json())
     .then(x => console.log(x))
     .catch(error => console.log(error))
