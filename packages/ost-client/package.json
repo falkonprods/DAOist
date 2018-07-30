@@ -11,5 +11,8 @@
     "node-fetch": "^2.1.2",
     "query-string": "^6.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+    "node": ">=8.6.0"
+  }
 }
