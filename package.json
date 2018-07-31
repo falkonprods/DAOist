@@ -36,6 +36,7 @@
     "destroy": "NODE_ENV=production ./deploy/destroy.sh",
     "frontend:dev": "lerna run frontend:dev",
     "frontend:build": "lerna run frontend:build",
-    "frontend:deploy": "lerna run frontend:deploy"
+    "frontend:deploy": "lerna run frontend:deploy",
+    "postinstall": "lerna init && lerna bootstrap"
   }
 }
