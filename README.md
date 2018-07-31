@@ -7,9 +7,9 @@ This project contains the following packages:
 
 - [facade-counters](packages/facade-counters/README.md)
 - [facade-profile](packages/facade-profile/README.md)
-- [frontend](packages/frontend/README.md)]
-- [login](packages/frontend/README.md)]
-- [register](packages/register/README.md)]
+- [frontend](packages/frontend/README.md)
+- [login](packages/frontend/README.md)
+- [register](packages/register/README.md)
 
 ## Prerequisites
 - AWS account with access to IAM and Lambda
