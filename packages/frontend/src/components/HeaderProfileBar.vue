@@ -42,6 +42,8 @@
 import Vuex from 'vuex'
 import axios from 'axios'
 
+const VINZY_API_BASE_URI = 'https://vinzy.softwareapi.run'
+
 export default {
   name: 'HeaderProfileBar',
   data() {
@@ -57,7 +59,7 @@ export default {
     if (this.isLoggedIn) {
       axios
         .get(
-          `https://m1ufhri369.execute-api.us-east-1.amazonaws.com/latest?token=${localStorage.getItem(
+          `${VINZY_API_BASE_URI}/profile?token=${localStorage.getItem(
             'token'
           )}`,
           {}

@@ -1,4 +1,8 @@
 # vinzy-ost
+
+Project intro text....
+
+#Packages
 This project contains the following packages:
 
 - [facade-counters](packages/facade-counters/README.md)
@@ -13,23 +17,11 @@ This project contains the following packages:
 - Yarn 1.4.2+
 - Linux (recommended)
 
-## installation
+## Installation
 
 ```
 yarn install
 ```
-
-## Configuration
-
-- [AWS credentials](https://claudiajs.com/tutorials/installing.html#detailed-info-about-credentials)
-
-## Environment variables
-The `/.env.example` contains all the default environment variables development keys just copy it to `/.env`
-
-For the production environment we can create an `/.env.production` file where we store all the production environment keys.
-
-*special note* the  `/.env.production` production is required for deploying to a production environment
-and `/.env` to development.
 
 ## Deployment:
 For each function their is an entry in package.json to Create, Update and Destroy a Function on AWS Lambda.
@@ -55,3 +47,6 @@ yarn add <name of package> --save
 ## Project dependencies
 - Yarn [work spaces](https://yarnpkg.com/blog/2017/08/02/introducing-workspaces/) with [nohoist](https://yarnpkg.com/blog/2018/02/15/nohoist/)
 - [Claudiajs](https://claudiajs.com/)
+
+## License
+See the [LICENSE](LICENSE) file for license rights and limitations (MIT).

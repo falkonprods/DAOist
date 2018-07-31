@@ -23,7 +23,7 @@
 
 <script>
 import axios from 'axios'
-
+const VINZY_API_BASE_URI = 'https://vinzy.softwareapi.run'
 export default {
   data() {
     return {
@@ -36,7 +36,7 @@ export default {
   // Fetches posts when the component is created.
   created() {
     axios
-      .get('https://rresc2hcz5.execute-api.us-east-1.amazonaws.com/latest')
+      .get(`${VINZY_API_BASE_URI}/counters`)
       .then(response => {
         this.wineries = response.data.wineries
         this.vincoins = Math.trunc(response.data.vincoins)
