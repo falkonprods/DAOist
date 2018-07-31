@@ -28,7 +28,7 @@ For each function their is an entry in package.json to Create, Update and Destro
 
 The available commands for interacting with AWS are:
 
-- `yarn run deploy <function>` Creates or updates a function and removes it from api gateway.
+- `yarn run deploy <function>` Creates or updates a function and adds it to api gateway.
 - `yarn run destroy <function>` Destroys the function and removes it from api gateway.
 
 ## Testing
