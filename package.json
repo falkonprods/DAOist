@@ -32,9 +32,6 @@
   },
   "scripts": {
     "lint": "eslint packages/**/*.js packages/**/*.vue",
-    "test": "./node_modules/.bin/tape packages/test/*.test.js | tap-spec",
-    "coverage": "./node_modules/.bin/nyc npm test",
-    "coverage:html": "./node_modules/.bin/nyc --reporter=html npm test",
     "deploy": "NODE_ENV=production ./deploy/deploy.sh",
     "destroy": "NODE_ENV=production ./deploy/destroy.sh",
     "frontend:dev": "lerna run frontend:dev",

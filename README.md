@@ -1,5 +1,7 @@
 # vinzy-ost
 
+[![Build Status](https://travis-ci.org/falkonprods/vinzy-ost.svg?branch=master)](https://travis-ci.org/falkonprods/vinzy-ost)
+
 Project intro text....
 
 ## Packages
