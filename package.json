@@ -32,6 +32,7 @@
   },
   "scripts": {
     "lint": "eslint packages/**/*.js packages/**/*.vue",
+    "test": "exit 0",
     "deploy": "NODE_ENV=production ./deploy/deploy.sh",
     "destroy": "NODE_ENV=production ./deploy/destroy.sh",
     "frontend:dev": "lerna run frontend:dev",
