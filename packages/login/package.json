@@ -15,9 +15,9 @@
   },
   "scripts": {
     "env:prepare": "cat ../../.env.production | envfile2json > env.json",
-    "claudia:create": "cat ../../.env.production | envfile2json > env.json | claudia create --name vinzy-login --handler index.login --deploy-proxy-api --region us-east-1 --use-local-dependencies --set-env-from-json env.json",
-    "claudia:update": "cat ../../.env.production | envfile2json > env.json | claudia update --use-local-dependencies --set-env-from-json env.json",
-    "claudia:destroy": "claudia destroy"
+    "create:login:production": "cat ../../.env.production | envfile2json > env.json | claudia create --name vinzy-login --handler index.login --deploy-proxy-api --region us-east-1 --use-local-dependencies --set-env-from-json env.json --config production.claudia.json --version production",
+    "update:login:production": "cat ../../.env.production | envfile2json > env.json | claudia update --use-local-dependencies --set-env-from-json env.json --config production.claudia.json --version production",
+    "destroy:login:production": "claudia destroy --config production.claudia.json"
   },
   "engines": {
     "node": ">=8.6.0"

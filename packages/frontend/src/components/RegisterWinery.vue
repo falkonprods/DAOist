@@ -42,6 +42,8 @@
 <script>
 import axios from 'axios'
 
+const VINZY_API_BASE_URI = 'https://vinzy.softwareapi.run'
+
 export default {
   data() {
     return {
@@ -60,7 +62,7 @@ export default {
         password: this.password,
       }
       axios({
-        url: 'https://751sbcn3ke.execute-api.us-east-1.amazonaws.com/latest',
+        url: `${VINZY_API_BASE_URI}/register`,
         data: JSON.stringify(model),
         method: 'POST',
       })

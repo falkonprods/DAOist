@@ -35,11 +35,10 @@
     "test": "./node_modules/.bin/tape packages/test/*.test.js | tap-spec",
     "coverage": "./node_modules/.bin/nyc npm test",
     "coverage:html": "./node_modules/.bin/nyc --reporter=html npm test",
-    "lerna:claudia:create": "lerna run claudia:create",
-    "lerna:claudia:update": "lerna run claudia:update",
-    "lerna:claudia:destroy": "lerna run claudia:destroy",
-    "lerna:frontend:dev": "lerna run frontend:dev",
-    "lerna:frontend:build": "lerna run frontend:build",
-    "lerna:frontend:deploy": "lerna run frontend:deploy"
+    "deploy": "NODE_ENV=production ./deploy/deploy.sh",
+    "destroy": "NODE_ENV=production ./deploy/destroy.sh",
+    "frontend:dev": "lerna run frontend:dev",
+    "frontend:build": "lerna run frontend:build",
+    "frontend:deploy": "lerna run frontend:deploy"
   }
 }

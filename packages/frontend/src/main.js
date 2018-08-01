@@ -11,9 +11,11 @@ import Login from './components/Login'
 Vue.use(Vuex)
 Vue.use(VueRouter)
 
+const VINZY_API_BASE_URI = 'https://vinzy.softwareapi.run'
 const LOGIN = 'LOGIN'
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const LOGOUT = 'LOGOUT'
+
 
 const store = new Vuex.Store({
   state: {
@@ -40,7 +42,7 @@ const store = new Vuex.Store({
       console.log('login...', creds)
       return new Promise((resolve, reject) => {
         commit(LOGIN)
-        axios ({ url: 'https://bcm9j99k7f.execute-api.us-east-1.amazonaws.com/latest', data: JSON.stringify(creds), method: 'POST' })
+        axios ({ url: `${VINZY_API_BASE_URI}/login`, data: JSON.stringify(creds), method: 'POST' })
           .then(resp => {
             console.log(resp)
             const token = resp.data.token
