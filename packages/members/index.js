@@ -29,8 +29,6 @@ module.exports.members = async event => {
       parameters.next = event.queryStringParameters.next ? event.queryStringParameters.next : null
     }
 
-    console.log(parameters)
-
     let result = await membersService.fetchAll(parameters)
     apiGatewayResponse.statusCode = 200
     apiGatewayResponse.body = JSON.stringify(result)

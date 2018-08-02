@@ -7,7 +7,7 @@
   "private": true,
   "dependencies": {
     "mongo": "file:../../packages/mongo",
-    "node-fetch": "^2.1.2"
+    "mongodb": "^3.0.7"
   },
   "devDependencies": {
     "claudia": "^4.0.0",

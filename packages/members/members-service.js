@@ -1,4 +1,5 @@
 const DB_COLLECTION_USERS = 'users'
+const ObjectID = require('mongodb').ObjectID
 
 class MembersService {
   constructor(mongo) {
@@ -15,11 +16,9 @@ async function fetchAll(limit = 10, next = null) {
 
   if (next) {
     filter = {
-      _id: { $lt: next },
+      _id: { $lt: ObjectID(next) },
     }
   }
-
-  console.log(filter)
 
   const items = await collection
     .find(filter, { fields: { ost: 0, hash: 0 } })
@@ -31,15 +30,13 @@ async function fetchAll(limit = 10, next = null) {
 
   next = items[items.length - 1]._id
 
-  console.log(items, next)
-
   return {
     members: items,
     next: next,
   }
 }
 
-MembersService.prototype.fetchAll = async function({ limit, next }) {
+MembersService.prototype.fetchAll = async function ({ limit, next }) {
   return await fetchAll.call(this, limit, next)
 }
 
