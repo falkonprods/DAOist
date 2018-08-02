@@ -36,7 +36,7 @@ async function fetchAll(limit = 10, next = null) {
   }
 }
 
-MembersService.prototype.fetchAll = async function ({ limit, next }) {
+MembersService.prototype.fetchAll = async function({ limit, next }) {
   return await fetchAll.call(this, limit, next)
 }
 
