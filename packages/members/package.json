@@ -1,0 +1,32 @@
+{
+  "name": "members",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "boris@websoftwar.es",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "mongo": "file:../../packages/mongo",
+    "node-fetch": "^2.1.2"
+  },
+  "devDependencies": {
+    "claudia": "^4.0.0",
+    "envfile": "^2.3.0",
+    "dotenv" : "^5.0.1",
+    "nyc": "^11.2.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0"
+  },
+  "scripts": {
+  "env:prepare" : "cat ../../.env.production | envfile2json > env.json",
+  "create:members:production": "cat ../../.env.production | envfile2json > env.json | claudia create --name vinzy-members --handler index.members --deploy-proxy-api --region us-east-1 --use-local-dependencies --set-env-from-json env.json --config production.claudia.json --version production",
+  "update:members:production": "cat ../../.env.production | envfile2json > env.json | claudia update --use-local-dependencies --set-env-from-json env.json --config production.claudia.json --version production",
+  "destroy:members:production": "claudia destroy --config production.claudia.json",
+  "test": "./node_modules/.bin/tape packages/test/*.test.js | tap-spec",
+  "coverage": "./node_modules/.bin/nyc yarn test",
+  "coverage:html": "./node_modules/.bin/nyc --reporter=html yarn test"
+  },
+  "engines": {
+    "node": "8.10.0"
+  }
+}
