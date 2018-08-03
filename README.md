@@ -10,6 +10,7 @@ This project contains the following packages:
 - [frontend](packages/frontend/README.md)
 - [login](packages/login/README.md)
 - [register](packages/register/README.md)
+- [members](packages/members/README.md)
 
 ## Prerequisites
 - AWS account with access to IAM and Lambda

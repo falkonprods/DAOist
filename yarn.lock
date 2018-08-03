@@ -4015,13 +4015,6 @@ lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, 
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
-"login@file:packages/login":
-  version "1.0.0"
-  dependencies:
-    bcryptjs "^2.4.3"
-    jsonwebtoken "^8.2.1"
-    mongo "file:../../../home/overcrookd/.cache/yarn/packages/mongo"
-
 loglevel@^1.4.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
@@ -5571,14 +5564,6 @@ regexpu-core@^2.0.0:
     regenerate "^1.2.1"
     regjsgen "^0.2.0"
     regjsparser "^0.1.4"
-
-"register@file:packages/register":
-  version "1.0.0"
-  dependencies:
-    "@ostdotcom/ost-sdk-js" "^1.0.0"
-    bcryptjs "^2.0.1"
-    mongo "file:../../../home/overcrookd/.cache/yarn/packages/mongo"
-    ost-client "file:../../../home/overcrookd/.cache/yarn/packages/ost-client"
 
 registry-auth-token@^3.0.1:
   version "3.3.2"
