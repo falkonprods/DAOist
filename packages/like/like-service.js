@@ -1,27 +1,87 @@
+const DB_COLLECTION_USERS = 'users'
+const ObjectID = require('mongodb').ObjectID
+
 class LikeService {
-  constructor(members, ost) {
+  constructor(members, ost, actionId, mongo) {
     this.members = members
     this.ost = ost
+    this.actionId = actionId
+    this.mongo = mongo
   }
 }
 
-LikeService.prototype.like = async function({ fromUser, toUser, actionId }) {
+async function likeOstTransaction(fromUser, toUser, users) {
+  const transactionService = this.ost.services.transactions
+  let ostTransactionModel = { from_user_id: null, to_user_id: null, action_id: this.actionId }
+
+  for (let i = 0; i < users.length; i++) {
+    if (users[i]._id == fromUser) {
+      ostTransactionModel.from_user_id = users[i].ost.id
+    }
+
+    if (users[i]._id == toUser) {
+      ostTransactionModel.to_user_id = users[i].ost.id
+    }
+  }
+
+  const result = await transactionService.execute(ostTransactionModel)
+  console.log(result)
+  return result
+}
+
+async function updateLikeMember(fromUser, toUser) {
+  let connection = await this.mongo()
+  let db = await connection.db()
+  let collection = db.collection(DB_COLLECTION_USERS)
+
+  await collection.update(
+    {
+      _id: ObjectID(toUser),
+      likes: { $ne: ObjectID(fromUser) },
+    },
+    {
+      $inc: { likeCount: 1 },
+      $push: { likes: ObjectID(fromUser) },
+    }
+  )
+}
+
+async function removeLikeMember(fromUser, toUser) {
+  let connection = await this.mongo()
+  let db = await connection.db()
+  let collection = db.collection(DB_COLLECTION_USERS)
+  await collection.update(
+    {
+      _id: ObjectID(toUser),
+      likes: { $ne: ObjectID(fromUser) },
+    },
+    {
+      $inc: { likeCount: -1 },
+      $pull: { likes: ObjectID(fromUser) },
+    }
+  )
+}
+
+LikeService.prototype.like = async function({ fromUser, toUser }) {
   const users = await this.members.fetchBy({
     params: [{ _id: fromUser }, { _id: toUser }],
     fields: { ost: 1 },
   })
 
-  const transactionService = this.ost.services.transactions
-
-  // const result = await transactionService.execute({from_user_id:'0a201640-77a7-49c8-b289-b6b5d7325323', to_user_id:'24580db2-bf29-4d73-bf5a-e1d0cf8c8928', action_id:'22599'})
-
-
+  await likeOstTransaction.call(this, fromUser, toUser, users)
+  await updateLikeMember.call(this, fromUser, toUser)
 }
 
-/**
- * @param {*} membersService
- * @param {*} ostSdk
- */
-module.exports = (membersService, ostSdk) => {
-  return new LikeService(membersService, ostSdk)
+LikeService.prototype.unlike = async function({ fromUser, toUser }) {
+  const users = await this.members.fetchBy({
+    params: [{ _id: fromUser }, { _id: toUser }],
+    fields: { ost: 1 },
+  })
+
+  await likeOstTransaction.call(this, toUser, fromUser, users)
+  await removeLikeMember.call(this, fromUser, toUser)
+}
+
+module.exports = (membersService, ostSdk, actionId) => {
+  return new LikeService(membersService, ostSdk, actionId)
 }

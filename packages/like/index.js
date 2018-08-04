@@ -4,7 +4,7 @@ if (!production) {
 }
 
 const mongo = require('mongo')
-const membersService = require('./members-service')(mongo)
+const membersService = require('members-service')(mongo)
 
 const OSTSDK = require('@ostdotcom/ost-sdk-js')
 const ost = new OSTSDK({
@@ -13,7 +13,12 @@ const ost = new OSTSDK({
   apiEndpoint: process.env.API_BASE_URL_LATEST,
 })
 
-const likeService = require('./like-service')(membersService, ost)
+const likeService = require('./like-service')(
+  membersService,
+  ost,
+  process.env.LIKE_ACTION_ID,
+  mongo
+)
 
 const CacheControlExpirationTime = 86400
 
@@ -35,10 +40,10 @@ module.exports.like = async event => {
 
     if (event.queryStringParameters) {
       parameters.next = event.queryStringParameters.from_user_id
-        ? event.queryStringParameters.from_user_id
+        ? event.queryStringParameters.fromUser
         : null
       parameters.next = event.queryStringParameters.to_user_id
-        ? event.queryStringParameters.to_user_id
+        ? event.queryStringParameters.toUser
         : null
     }
 
