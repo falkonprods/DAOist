@@ -45,8 +45,28 @@ async function fetchAll(limit = 10, next = null, prev = null) {
   }
 }
 
+async function fetchBy(params = {}, fields = { ost: 0, hash: 0 }) {
+  let connection = await this.mongo()
+  let db = await connection.db()
+  let collection = db.collection(DB_COLLECTION_USERS)
+
+  if (params !== null && !Array.isArray(params)) {
+    params = [params]
+  }
+
+  let filteredParams = params.filter(param => param._id).map(param => {
+    param._id = ObjectID(param._id)
+    return param
+  })
+  return await collection.find({ $or: filteredParams }, { fields: fields }).toArray()
+}
+
 MembersService.prototype.fetchAll = async function({ limit, next }) {
   return await fetchAll.call(this, limit, next)
+}
+
+MembersService.prototype.fetchBy = async function({ params, fields }) {
+  return await fetchBy.call(this, params, fields)
 }
 
 /**
