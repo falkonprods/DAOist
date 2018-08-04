@@ -7,7 +7,7 @@ class MembersService {
   }
 }
 
-async function fetchAll(limit = 10, next = null) {
+async function fetchAll(limit = 10, next = null, prev = null) {
   let connection = await this.mongo()
   let db = await connection.db()
   let collection = db.collection(DB_COLLECTION_USERS)
@@ -17,6 +17,12 @@ async function fetchAll(limit = 10, next = null) {
   if (next) {
     filter = {
       _id: { $lt: ObjectID(next) },
+    }
+  }
+
+  if (prev) {
+    filter = {
+      _id: { $gte: ObjectID(prev) },
     }
   }
 
@@ -41,9 +47,7 @@ MembersService.prototype.fetchAll = async function({ limit, next }) {
 }
 
 /**
- *
  * @param {*} mongo
- * @param {*} fetch
  */
 module.exports = mongo => {
   return new MembersService(mongo)

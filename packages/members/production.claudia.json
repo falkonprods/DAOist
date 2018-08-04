@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "vinzy-members-executor",
+    "name": "vinzy-members",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "gao0s9bx33"
+  }
+}

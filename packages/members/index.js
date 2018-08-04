@@ -20,13 +20,14 @@ const apiGatewayResponse = {
 
 module.exports.members = async event => {
   try {
-    let parameters = { limit: 10, next: null }
+    let parameters = { limit: 10, next: null, prev: null }
 
     if (event.queryStringParameters) {
       parameters.limit = event.queryStringParameters.limit
         ? parseInt(event.queryStringParameters.limit)
         : 10
       parameters.next = event.queryStringParameters.next ? event.queryStringParameters.next : null
+      parameters.next = event.queryStringParameters.prev ? event.queryStringParameters.prev : null
     }
 
     let result = await membersService.fetchAll(parameters)

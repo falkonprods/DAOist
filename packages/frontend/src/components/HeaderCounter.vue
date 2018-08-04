@@ -1,15 +1,16 @@
 <template>
   <nav class="level">
-    <div class="level-item has-text-centered">
-      <div>
-        <p class="title">{{ vincoins }}</p>
-        <p class="heading">Vincoins in system </p>
-      </div>
-    </div>
+
     <div class="level-item has-text-centered">
       <div>
         <p class="title">{{ wineries }}</p>
-        <p class="heading">Wineries</p>
+        <p class="heading">Members</p>
+      </div>
+    </div>
+     <div class="level-item has-text-centered">
+      <div>
+        <p class="title">{{ vincoins }}</p>
+        <p class="heading">Vincoins in system </p>
       </div>
     </div>
     <div class="level-item has-text-centered">
@@ -46,3 +47,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+  div.level-item {
+    cursor: pointer
+  }
+</style>
