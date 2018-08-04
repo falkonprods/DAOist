@@ -39,10 +39,10 @@ module.exports.like = async event => {
     let parameters = { fromUser: null, toUser: null }
 
     if (event.queryStringParameters) {
-      parameters.next = event.queryStringParameters.from_user_id
+      parameters.next = event.queryStringParameters.fromUser
         ? event.queryStringParameters.fromUser
         : null
-      parameters.next = event.queryStringParameters.to_user_id
+      parameters.next = event.queryStringParameters.toUser
         ? event.queryStringParameters.toUser
         : null
     }
