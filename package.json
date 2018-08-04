@@ -17,7 +17,8 @@
       "**/facade-counters/**",
       "**/facade-profile/**",
       "**/members/**",
-      "**/like/**"
+      "**/like/**",
+      "**/token/**"
     ]
   },
   "devDependencies": {

@@ -18,6 +18,7 @@
       class="navbar-item"
       href="">
       {{ tokenBalance }} VINCOINS
+      ( {{ dollarEquiv }} USD )
     </a>
 
     <div
@@ -48,31 +49,43 @@ export default {
   name: 'HeaderProfileBar',
   data() {
     return {
-      tokenBalance: null,
+      tokenBalance: 0,
+      conversionRate: 0,
     }
   },
   computed: {
     ...Vuex.mapGetters(['isLoggedIn']),
+    dollarEquiv() {
+      return this.tokenBalance * this.conversionRate
+    },
   },
   // Fetches posts when the component is created.
   created() {
     if (this.isLoggedIn) {
-      axios
-        .get(
-          `${VINZY_API_BASE_URI}/profile?token=${localStorage.getItem(
-            'token'
-          )}`,
-          {}
-        )
-        .then(response => {
-          this.tokenBalance = response.data.tokenBalance
-          return
-        })
-        .catch(e => console.log(e))
+      this.getTokenBalance()
+      this.getConversionRate()
     }
   },
   methods: {
     ...Vuex.mapActions(['logout']),
+    getTokenBalance() {
+      axios
+        .get(`${VINZY_API_BASE_URI}/profile?token=${localStorage.getItem('token')}`, {})
+        .then(res => {
+          this.tokenBalance = res.data.tokenBalance
+          return
+        })
+        .catch(e => console.log(e))
+    },
+    getConversionRate() {
+      axios
+        .get(`${VINZY_API_BASE_URI}/token`, {})
+        .then(res => {
+          this.conversionRate = res.data.price_points.OST.USD
+          return
+        })
+        .catch(e => console.log(e))
+    },
   },
 }
 </script>
