@@ -50,7 +50,6 @@ export default {
       members: null,
       next: null,
       prev: null,
-      isLoading: false,
       load:  (url) => axios
       .get(url)
       .then(response => {
