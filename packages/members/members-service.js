@@ -13,6 +13,9 @@ async function fetchAll(limit = 10, next = null, prev = null) {
   let collection = db.collection(DB_COLLECTION_USERS)
 
   let filter = {}
+  let sort = {
+    _id: -1,
+  }
 
   if (next) {
     filter = {
@@ -22,16 +25,16 @@ async function fetchAll(limit = 10, next = null, prev = null) {
 
   if (prev) {
     filter = {
-      _id: { $gte: ObjectID(prev) },
+      _id: { $gt: ObjectID(prev) },
     }
+
+    sort._id = 1
   }
 
   const items = await collection
     .find(filter, { fields: { ost: 0, hash: 0 } })
     .limit(limit)
-    .sort({
-      _id: -1,
-    })
+    .sort(sort)
     .toArray()
 
   next = items[items.length - 1]._id
