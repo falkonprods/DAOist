@@ -6,8 +6,8 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "mongo": "file:../../packages/mongo",
-    "mongodb": "^3.0.7"
+    "members-service": "file:../../packages/members-service",
+    "mongo": "file:../../packages/mongo"
   },
   "devDependencies": {
     "claudia": "^4.0.0",
@@ -27,6 +27,6 @@
   "coverage:html": "./node_modules/.bin/nyc --reporter=html yarn test"
   },
   "engines": {
-    "node": "8.10.0"
+    "node": ">=8.6.0"
   }
 }
