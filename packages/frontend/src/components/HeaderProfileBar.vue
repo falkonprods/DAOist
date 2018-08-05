@@ -51,12 +51,13 @@ export default {
     return {
       tokenBalance: 0,
       conversionRate: 0,
+      pricePoint: 0,
     }
   },
   computed: {
     ...Vuex.mapGetters(['isLoggedIn']),
     dollarEquiv() {
-      return this.tokenBalance * this.conversionRate
+      return (this.tokenBalance / this.conversionRate) * this.pricePoint
     },
   },
   // Fetches posts when the component is created.
@@ -81,7 +82,8 @@ export default {
       axios
         .get(`${VINZY_API_BASE_URI}/token`, {})
         .then(res => {
-          this.conversionRate = res.data.price_points.OST.USD
+          this.pricePoint = res.data.price_points.OST.USD
+          this.conversionRate = res.data.token.conversion_factor
           return
         })
         .catch(e => console.log(e))

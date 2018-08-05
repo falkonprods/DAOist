@@ -25,7 +25,6 @@ const apiGatewayResponse = {
 }
 
 const filterKeys = [
-  'result_type',
   'company_uuid',
   'token_erc20_address',
   'airdrop_contract_address',
