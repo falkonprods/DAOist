@@ -57,7 +57,7 @@ export default {
   computed: {
     ...Vuex.mapGetters(['isLoggedIn']),
     dollarEquiv() {
-      return (this.tokenBalance / this.conversionRate) * this.pricePoint
+      return ((this.tokenBalance / this.conversionRate) * this.pricePoint).toFixed(4)
     },
   },
   // Fetches posts when the component is created.

@@ -33,7 +33,7 @@ const filterKeys = [
 
 module.exports.token = async () => {
   try {
-    const res = await ost.services.token.get({})
+    let res = await ost.services.token.get({})
 
     if (res.success) {
       apiGatewayResponse.statusCode = 200
@@ -41,11 +41,12 @@ module.exports.token = async () => {
       for (const key of filterKeys) {
         delete res.data.token[key]
       }
+      console.log(res.data)
 
       apiGatewayResponse.body = JSON.stringify(res.data)
+    } else {
+      apiGatewayResponse.body = JSON.stringify(res.err)
     }
-
-    apiGatewayResponse.body = JSON.stringify(res.err)
   } catch (err) {
     console.log(err)
     apiGatewayResponse.body = JSON.stringify({ message: err.message })
