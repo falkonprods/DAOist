@@ -1,0 +1,31 @@
+{
+  "name": "profile",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "boris@websoftwar.es",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "ost-client": "file:../../packages/ost-client",
+    "balance-service": "file:../../packages/balance-service",
+    "transactions-service": "file:../../packages/transactions-service",
+    "jsonwebtoken": "^8.2.1"
+  },
+  "devDependencies": {
+    "claudia": "^4.0.0",
+    "envfile": "^2.3.0",
+    "dotenv" : "^5.0.1"
+  },
+  "scripts": {
+    "env:prepare" : "cat ../../.env.production | envfile2json > env.json",
+    "create:profile:production": "cat ../../.env.production | envfile2json > env.json | claudia create --name vinzy-profile --handler index.profile --deploy-proxy-api --region us-east-1 --use-local-dependencies --set-env-from-json env.json --config production.claudia.json --version production",
+    "update:profile:production": "cat ../../.env.production | envfile2json > env.json | claudia update --use-local-dependencies --set-env-from-json env.json --config production.claudia.json --version production",
+    "destroy:profile:production": "claudia destroy --config production.claudia.json",
+    "test": "./node_modules/.bin/tape packages/test/*.test.js | tap-spec",
+    "coverage": "./node_modules/.bin/nyc yarn test",
+    "coverage:html": "./node_modules/.bin/nyc --reporter=html yarn test"
+  },
+  "engines": {
+    "node": ">=8.10.0"
+  }
+}
