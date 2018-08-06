@@ -24,6 +24,7 @@ module.exports = {
     'node/no-extraneous-require': 0,
     'node/no-unpublished-import': 0,
     'node/no-unpublished-require': 0,
+    'node/no-missing-require': 0,
     indent: ['error', 2],
     quotes: ['error', 'single'],
     semi: ['error', 'never'],

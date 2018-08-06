@@ -18,6 +18,7 @@
       class="navbar-item"
       href="">
       {{ tokenBalance }} VINCOINS
+      ( {{ dollarEquiv }} USD )
     </a>
 
     <div
@@ -42,37 +43,56 @@
 import Vuex from 'vuex'
 import axios from 'axios'
 
+const DEC_PRECISION = 4
 const VINZY_API_BASE_URI = 'https://vinzy.softwareapi.run'
 
 export default {
   name: 'HeaderProfileBar',
   data() {
     return {
-      tokenBalance: null,
+      tokenBalance: 0,
+      conversionRate: 0,
+      pricePoint: 0,
     }
   },
   computed: {
     ...Vuex.mapGetters(['isLoggedIn']),
+    // Calculates dollar equivalent: VIN > OST > USD
+    dollarEquiv() {
+      return ((this.tokenBalance / this.conversionRate) * this.pricePoint).toFixed(DEC_PRECISION)
+    },
   },
   // Fetches posts when the component is created.
   created() {
     if (this.isLoggedIn) {
-      axios
-        .get(
-          `${VINZY_API_BASE_URI}/profile?token=${localStorage.getItem(
-            'token'
-          )}`,
-          {}
-        )
-        .then(response => {
-          this.tokenBalance = response.data.tokenBalance
-          return
-        })
-        .catch(e => console.log(e))
+      this.getTokenBalance()
+      this.getConversionRate()
     }
   },
   methods: {
     ...Vuex.mapActions(['logout']),
+    // Fetches VIN token balance
+    // To be deprecated on 2nd October 2018, use /budget instead
+    getTokenBalance() {
+      axios
+        .get(`${VINZY_API_BASE_URI}/profile?token=${localStorage.getItem('token')}`, {})
+        .then(res => {
+          this.tokenBalance = res.data.tokenBalance
+          return
+        })
+        .catch(e => console.log(e))
+    },
+    // Fetches VIN token details
+    getConversionRate() {
+      axios
+        .get(`${VINZY_API_BASE_URI}/token`, {})
+        .then(res => {
+          this.pricePoint = res.data.price_points.OST.USD
+          this.conversionRate = res.data.token.conversion_factor
+          return
+        })
+        .catch(e => console.log(e))
+    },
   },
 }
 </script>
