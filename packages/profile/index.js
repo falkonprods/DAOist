@@ -47,7 +47,7 @@ async function getUserTransactions(userID) {
 
 // Get Branded Token details and conversion rates
 async function getTokenDetails() {
-  return await tokenService.fetch()
+  return await tokenService.fetchFiltered()
 }
 
 module.exports.profile = async event => {
