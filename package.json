@@ -15,10 +15,11 @@
       "**/register/**",
       "**/login/**",
       "**/facade-counters/**",
-      "**/facade-profile/**",
+      "**/profile/**",
       "**/members/**",
       "**/like/**",
-      "**/token/**"
+      "**/token/**",
+      "**/balance/**"
     ]
   },
   "devDependencies": {

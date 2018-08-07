@@ -12,7 +12,7 @@ const ost = new OSTSDK({
   apiEndpoint: process.env.API_BASE_URL_LATEST,
 })
 
-const tokenService = require('token-service')(ost)
+// const tokenService = require('token-service')(ost)
 const balanceService = require('balance-service')(ost)
 
 const CacheControlExpirationTime = 86400
@@ -34,24 +34,25 @@ function getUserIdFromToken(token) {
 }
 
 async function getUserBalance(userID) {
-  return await balanceService.fetch(userID).data
+  return await balanceService.fetch(userID)
 }
-
-async function getUserTransactions(userID) {
-  return await tokenService.list(userID).data
-}
+//
+// async function getUserTransactions(userID) {
+  // return await tokenService.list(userID).data
+// }
 
 module.exports.profile = async event => {
   const token = event.queryStringParameters.token
   const userID = getUserIdFromToken(token)
   const balance = await getUserBalance(userID)
-  const transactions = await getUserTransactions(userID)
+  // const transactions = await getUserTransactions(userID)
+  console.log(balance)
 
   try {
     apiGatewayResponse.statusCode = 200
     apiGatewayResponse.body = JSON.stringify({
       balance,
-      transactions,
+      // transactions,
     })
   } catch (err) {
     apiGatewayResponse.body = JSON.stringify(err.message)

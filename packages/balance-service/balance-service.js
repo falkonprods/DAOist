@@ -1,9 +1,9 @@
-class BlanaceService {
+class BalanceService {
   constructor(ost) {
     this.ost = ost
   }
   async fetch(userID) {
-    const res = await this.ost.services.balance.get({ id: userID })
+    const res = await this.ost.services.balances.get({ id: userID })
 
     if (res.success) {
       return res
@@ -14,8 +14,7 @@ class BlanaceService {
 }
 /**
  * @param {*} ost
- * @param {String} mongo
  */
 module.exports = ost => {
-  return new BlanaceService(ost)
+  return new BalanceService(ost)
 }
