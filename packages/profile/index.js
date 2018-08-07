@@ -30,18 +30,22 @@ const apiGatewayResponse = {
   isBase64Encoded: false,
 }
 
+// Get OST user ID from token
 function getUserIdFromToken(token) {
   return jwt.verify(token, process.env.JWT_SECRET).user.ost.id
 }
 
+// Get user token balance
 async function getUserBalance(userID) {
   return await balancesService.fetch(userID)
 }
 
+// Get user transactions
 async function getUserTransactions(userID) {
   return await transactionsService.list(userID)
 }
 
+// Get Branded Token details and conversion rates
 async function getTokenDetails() {
   return await tokenService.fetch()
 }

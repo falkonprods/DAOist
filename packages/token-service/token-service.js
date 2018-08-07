@@ -16,6 +16,7 @@ class TokenService {
   }
 }
 
+// Filter out sensitive information
 function filter(t) {
   const filterKeys = [
     'company_uuid',

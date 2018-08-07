@@ -6,25 +6,28 @@ class LikeService {
     this.members = members
     this.transactions = transactions
     this.mongo = mongo
+    this.actionID = process.env.LIKE_ACTION_ID
   }
 
+  // Execute a transaction
   async like({ fromUser, toUser }) {
     const users = await this.members.fetchBy({
       params: [{ _id: fromUser }, { _id: toUser }],
       fields: { ost: 1 },
     })
 
-    await this.transactions.execute(fromUser, toUser, users)
+    await this.transactions.execute(this.actionID, fromUser, toUser, users)
     await updateLikeMember.call(this, fromUser, toUser)
   }
 
+  // Reverse previously executed transaction
   async unlike({ fromUser, toUser }) {
     const users = await this.members.fetchBy({
       params: [{ _id: fromUser }, { _id: toUser }],
       fields: { ost: 1 },
     })
 
-    await this.transactions.execute(toUser, fromUser, users)
+    await this.transactions.execute(this.actionID, toUser, fromUser, users)
     await removeLikeMember.call(this, fromUser, toUser)
   }
 }
