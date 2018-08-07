@@ -5,9 +5,7 @@
   "author": "Michael Tintiuc <contact@michaeltintiuc.com>",
   "license": "MIT",
   "private": true,
-  "dependencies": {
-    "mongodb": "^3.0.7"
-  },
+  "dependencies": {},
   "devDependencies": {
     "claudia": "^4.0.0",
     "envfile": "^2.3.0",
