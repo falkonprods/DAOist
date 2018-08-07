@@ -6,10 +6,11 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "ost-client": "file:../../packages/ost-client",
-    "balance-service": "file:../../packages/balance-service",
+    "token-service": "file:../../packages/token-service",
+    "balances-service": "file:../../packages/balances-service",
     "transactions-service": "file:../../packages/transactions-service",
-    "jsonwebtoken": "^8.2.1"
+    "jsonwebtoken": "^8.2.1",
+    "@ostdotcom/ost-sdk-js": "^1.1.0"
   },
   "devDependencies": {
     "claudia": "^4.0.0",

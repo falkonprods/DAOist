@@ -3,9 +3,6 @@ if (!production) {
   require('dotenv').config('../../.env.production')
 }
 
-const mongo = require('mongo')
-const membersService = require('members-service')(mongo)
-
 const OSTSDK = require('@ostdotcom/ost-sdk-js')
 const ost = new OSTSDK({
   apiKey: process.env.API_KEY,
@@ -13,12 +10,10 @@ const ost = new OSTSDK({
   apiEndpoint: process.env.API_BASE_URL_LATEST,
 })
 
-const likeService = require('./like-service')(
-  membersService,
-  ost,
-  process.env.LIKE_ACTION_ID,
-  mongo
-)
+const mongo = require('mongo')
+const membersService = require('members-service')(mongo)
+const transactionsService = require('transactions-service')(ost)
+const likeService = require('./like-service')(membersService, transactionsService, mongo)
 
 const CacheControlExpirationTime = 86400
 

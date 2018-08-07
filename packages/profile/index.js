@@ -12,8 +12,9 @@ const ost = new OSTSDK({
   apiEndpoint: process.env.API_BASE_URL_LATEST,
 })
 
-// const tokenService = require('token-service')(ost)
-const balanceService = require('balance-service')(ost)
+const tokenService = require('token-service')(ost)
+const balancesService = require('balances-service')(ost)
+const transactionsService = require('transactions-service')(ost)
 
 const CacheControlExpirationTime = 86400
 
@@ -34,25 +35,32 @@ function getUserIdFromToken(token) {
 }
 
 async function getUserBalance(userID) {
-  return await balanceService.fetch(userID)
+  return await balancesService.fetch(userID)
 }
-//
-// async function getUserTransactions(userID) {
-  // return await tokenService.list(userID).data
-// }
+
+async function getUserTransactions(userID) {
+  return await transactionsService.list(userID)
+}
+
+async function getTokenDetails() {
+  return await tokenService.fetch()
+}
 
 module.exports.profile = async event => {
   const token = event.queryStringParameters.token
   const userID = getUserIdFromToken(token)
-  const balance = await getUserBalance(userID)
-  // const transactions = await getUserTransactions(userID)
-  console.log(balance)
 
   try {
+    const balance = (await getUserBalance(userID)).data.balance
+    const transactions = (await getUserTransactions(userID)).data.transactions
+    const token = await getTokenDetails()
+
     apiGatewayResponse.statusCode = 200
     apiGatewayResponse.body = JSON.stringify({
       balance,
-      // transactions,
+      transactions,
+      token: token.data.token,
+      price_points: token.data.price_points,
     })
   } catch (err) {
     apiGatewayResponse.body = JSON.stringify(err.message)

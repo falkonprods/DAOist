@@ -24,25 +24,12 @@ const apiGatewayResponse = {
   isBase64Encoded: false,
 }
 
-const filterKeys = [
-  'company_uuid',
-  'token_erc20_address',
-  'airdrop_contract_address',
-  'simple_stake_contract_address',
-]
-
 module.exports.token = async () => {
   try {
     let res = await ost.services.token.get({})
 
     if (res.success) {
       apiGatewayResponse.statusCode = 200
-
-      for (const key of filterKeys) {
-        delete res.data.token[key]
-      }
-      console.log(res.data)
-
       apiGatewayResponse.body = JSON.stringify(res.data)
     } else {
       apiGatewayResponse.body = JSON.stringify(res.err)

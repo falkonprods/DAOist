@@ -1,0 +1,25 @@
+{
+  "name": "token-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Michael Tintiuc <contact@michaeltintiuc.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "claudia": "^4.0.0",
+    "envfile": "^2.3.0",
+    "dotenv" : "^5.0.1",
+    "nyc": "^11.2.1",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/tape packages/test/*.test.js | tap-spec",
+    "coverage": "./node_modules/.bin/nyc yarn test",
+    "coverage:html": "./node_modules/.bin/nyc --reporter=html yarn test"
+  },
+  "engines": {
+    "node": ">=8.10.0"
+  }
+}

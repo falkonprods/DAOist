@@ -2,6 +2,8 @@ class BalanceService {
   constructor(ost) {
     this.ost = ost
   }
+
+  // Fetch specific user's balance
   async fetch(userID) {
     const res = await this.ost.services.balances.get({ id: userID })
 
@@ -12,6 +14,7 @@ class BalanceService {
     throw new Error(res.err.msg)
   }
 }
+
 /**
  * @param {*} ost
  */

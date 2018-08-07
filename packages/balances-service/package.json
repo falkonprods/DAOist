@@ -1,5 +1,5 @@
 {
-  "name": "balance-service",
+  "name": "balances-service",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Michael Tintiuc <contact@michaeltintiuc.com>",

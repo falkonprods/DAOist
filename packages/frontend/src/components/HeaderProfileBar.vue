@@ -19,6 +19,7 @@
       href="">
       {{ tokenBalance }} VINCOINS
       ( {{ dollarEquiv }} USD )
+      {{ transactions.length }} transactions
     </a>
 
     <div
@@ -53,10 +54,12 @@ export default {
       tokenBalance: 0,
       conversionRate: 0,
       pricePoint: 0,
+      transactions: [],
     }
   },
   computed: {
     ...Vuex.mapGetters(['isLoggedIn']),
+
     // Calculates dollar equivalent: VIN > OST > USD
     dollarEquiv() {
       return ((this.tokenBalance / this.conversionRate) * this.pricePoint).toFixed(DEC_PRECISION)
@@ -65,30 +68,21 @@ export default {
   // Fetches posts when the component is created.
   created() {
     if (this.isLoggedIn) {
-      this.getTokenBalance()
-      this.getConversionRate()
+      this.getProfileInfo()
     }
   },
   methods: {
     ...Vuex.mapActions(['logout']),
-    // Fetches VIN token balance
-    // To be deprecated on 2nd October 2018, use /budget instead
-    getTokenBalance() {
+
+    // Fetches user balance and transactions info
+    getProfileInfo() {
       axios
         .get(`${VINZY_API_BASE_URI}/profile?token=${localStorage.getItem('token')}`, {})
         .then(res => {
-          this.tokenBalance = res.data.tokenBalance
-          return
-        })
-        .catch(e => console.log(e))
-    },
-    // Fetches VIN token details
-    getConversionRate() {
-      axios
-        .get(`${VINZY_API_BASE_URI}/token`, {})
-        .then(res => {
-          this.pricePoint = res.data.price_points.OST.USD
+          this.tokenBalance = res.data.balance.token_balance
           this.conversionRate = res.data.token.conversion_factor
+          this.pricePoint = res.data.price_points.OST.USD
+          this.transactions = res.data.transactions
           return
         })
         .catch(e => console.log(e))

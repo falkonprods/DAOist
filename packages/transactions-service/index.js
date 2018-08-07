@@ -1,1 +1,1 @@
-module.exports = require('./members-service')
+module.exports = require('./transactions-service')
