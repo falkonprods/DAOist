@@ -1,7 +1,6 @@
 <template>
   <section>
     <div class="container">
-
       <section class="vinzy-header">
         <div class="container">
           <nav
@@ -9,26 +8,20 @@
             role="navigation"
             aria-label="main navigation">
             <div class="navbar-brand">
-
               <a
                 class="navbar-item"
                 href="">
                 <h1 class="heading">vinzy</h1>
               </a>
-
-
             </div>
-            <HeaderProfileBar />
+            <HeaderProfileBar @toggleModal="toggleProfileModal"/>
           </nav>
-
           <HeaderCounter />
-
         </div>
       </section>
-
-    <MembersSection />
-
+      <MembersSection />
     </div>
+    <ProfileModal :is-open="isProfileModalOpen"/>
   </section>
 </template>
 
@@ -37,17 +30,28 @@ import HeaderProfileBar from './components/HeaderProfileBar'
 import HeaderCounter from './components/HeaderCounter'
 import IdeaSection from './components/IdeaSection'
 import MembersSection from './components/MembersSection'
+import ProfileModal from './components/ProfileModal'
+
 export default {
   name: 'App',
   components: {
     HeaderProfileBar,
     HeaderCounter,
     IdeaSection,
-    MembersSection
+    MembersSection,
+    ProfileModal,
+  },
+  data() {
+    return {
+      isProfileModalOpen: false,
+    }
   },
   methods: {
     goBack() {
       window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
+    },
+    toggleProfileModal() {
+      this.isProfileModalOpen = !this.isProfileModalOpen
     },
   },
 }

@@ -53,19 +53,27 @@ async function getTokenDetails() {
 module.exports.profile = async event => {
   const token = event.queryStringParameters.token
   const userID = getUserIdFromToken(token)
+  const responseBody = {}
+
+  const select = (event.queryStringParameters.select || 'balance,transactions,token').split(',')
 
   try {
-    const balance = (await getUserBalance(userID)).data.balance
-    const transactions = (await getUserTransactions(userID)).data.transactions
-    const token = await getTokenDetails()
+    if (select.includes('balance')) {
+      responseBody.balance = (await getUserBalance(userID)).data.balance
+    }
+
+    if (select.includes('transactions')) {
+      responseBody.transactions = (await getUserTransactions(userID)).data.transactions
+    }
+
+    if (select.includes('token')) {
+      const token = await getTokenDetails()
+      responseBody.token = token.data.token
+      responseBody.price_points = token.data.price_points
+    }
 
     apiGatewayResponse.statusCode = 200
-    apiGatewayResponse.body = JSON.stringify({
-      balance,
-      transactions,
-      token: token.data.token,
-      price_points: token.data.price_points,
-    })
+    apiGatewayResponse.body = JSON.stringify(responseBody)
   } catch (err) {
     apiGatewayResponse.body = JSON.stringify(err.message)
   }
