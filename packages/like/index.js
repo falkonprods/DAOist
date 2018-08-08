@@ -34,19 +34,21 @@ module.exports.like = async event => {
     let parameters = { fromUser: null, toUser: null }
 
     if (event.queryStringParameters) {
-      parameters.next = event.queryStringParameters.fromUser
+      parameters.fromUser = event.queryStringParameters.fromUser
         ? event.queryStringParameters.fromUser
         : null
-      parameters.next = event.queryStringParameters.toUser
+      parameters.toUser = event.queryStringParameters.toUser
         ? event.queryStringParameters.toUser
         : null
     }
+
+    console.log(parameters)
 
     let result = await likeService.like(parameters)
     apiGatewayResponse.statusCode = 200
     apiGatewayResponse.body = JSON.stringify(result)
   } catch (error) {
-    console.log(error)
+    console.log(JSON.stringify(error))
     apiGatewayResponse.body = JSON.stringify({ message: error.message })
   }
 

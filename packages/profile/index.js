@@ -35,6 +35,11 @@ function getUserIdFromToken(token) {
   return jwt.verify(token, process.env.JWT_SECRET).user.ost.id
 }
 
+// Get Vinzy user ID from token
+function getVinzyUserIdFromToken(token) {
+  return jwt.verify(token, process.env.JWT_SECRET).user._id
+}
+
 // Get user token balance
 async function getUserBalance(userID) {
   return await balancesService.fetch(userID)
@@ -53,6 +58,7 @@ async function getTokenDetails() {
 module.exports.profile = async event => {
   const token = event.queryStringParameters.token
   const userID = getUserIdFromToken(token)
+  const vinzyUserID = getVinzyUserIdFromToken(token)
 
   try {
     const balance = (await getUserBalance(userID)).data.balance
@@ -61,6 +67,7 @@ module.exports.profile = async event => {
 
     apiGatewayResponse.statusCode = 200
     apiGatewayResponse.body = JSON.stringify({
+      vinzyUserID: vinzyUserID,
       balance,
       transactions,
       token: token.data.token,
