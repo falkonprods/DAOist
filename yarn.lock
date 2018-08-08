@@ -6461,8 +6461,6 @@ to-regex@^3.0.1, to-regex@^3.0.2:
 
 "transactions-service@file:packages/transactions-service":
   version "1.0.0"
-  dependencies:
-    mongodb "^3.0.7"
 
 trim-newlines@^1.0.0:
   version "1.0.0"

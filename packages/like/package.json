@@ -8,6 +8,7 @@
   "dependencies": {
     "@ostdotcom/ost-sdk-js": "^1.1.0",
     "members-service": "file:../../packages/members-service",
+    "transactions-service": "file:../../packages/transactions-service",
     "mongo": "file:../../packages/mongo",
     "mongodb": "^3.0.7"
   },
