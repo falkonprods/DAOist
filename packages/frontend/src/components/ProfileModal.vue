@@ -55,7 +55,7 @@
               <td>{{ t.transaction_fee || '&mdash;' }}</td>
               <td :class="t.status === 'complete' ? 'success' : 'fail'">{{ t.status }}</td>
               <td>
-                <span v-if="profile.userID === t.to_user_id">Received</span>
+                <span v-if="profile.ostUserID === t.to_user_id">Received</span>
                 <span v-else>Sent</span>
                 <!-- TODO: insert sending or reciving user name -->
               </td>
