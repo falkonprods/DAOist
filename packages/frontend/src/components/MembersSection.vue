@@ -64,6 +64,11 @@ export default {
       prev: null,
       loggedInUserID: null,
       like: member => {
+
+        if(!this.isLoggedIn) {
+          return
+        }
+
         const toUser = member._id
         axios
           .get(`${VINZY_API_BASE_URI}/like?fromUser=${this.loggedInUserID}&toUser=${toUser}`)
