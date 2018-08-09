@@ -8,7 +8,7 @@
   "dependencies": {
     "token-service": "file:../../packages/token-service",
     "balances-service": "file:../../packages/balances-service",
-    "transactions-service": "file:../../packages/transactions-service",
+    "ledger-service": "file:../../packages/ledger-service",
     "jsonwebtoken": "^8.2.1",
     "@ostdotcom/ost-sdk-js": "^1.1.0"
   },

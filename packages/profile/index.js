@@ -14,7 +14,7 @@ const ost = new OSTSDK({
 
 const tokenService = require('token-service')(ost)
 const balancesService = require('balances-service')(ost)
-const transactionsService = require('transactions-service')(ost)
+const ledgerService = require('ledger-service')(ost)
 
 const CacheControlExpirationTime = 86400
 
@@ -47,7 +47,7 @@ async function getUserBalance(ostUserID) {
 
 // Get user transactions
 async function getUserTransactions(ostUserID, page_no = 1, limit = 10) {
-  return await transactionsService.listToOrFromUser(ostUserID, { page_no, limit })
+  return await ledgerService.fetch(ostUserID, { page_no, limit })
 }
 
 // Get Branded Token details and conversion rates
@@ -71,13 +71,11 @@ module.exports.profile = async event => {
     }
 
     if (select.includes('transactions')) {
-      const transactions = await getUserTransactions(
+      responseBody.transactions = (await getUserTransactions(
         ostUserID,
         transactionsPage,
         transactionsPerPage
-      )
-      responseBody.transactions = transactions.data.transactions
-      responseBody.transactions_next = transactions.data.meta.next_page_payload
+      )).data.transactions
     }
 
     if (select.includes('token')) {
