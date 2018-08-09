@@ -30,10 +30,12 @@ class LikeService {
       fields: { ost: 1 },
     })
 
-    return await Promise.all([
-      this.transactions.execute(this.actionID, toUser, fromUser, users),
-      removeLikeMember.call(this, fromUser, toUser),
-    ])
+    let updated = await removeLikeMember.call(this, fromUser, toUser)
+    if (updated.result.ok === 1 && updated.result.nModified === 1) {
+      return await this.transactions.execute(this.actionID, toUser, fromUser, users)
+    } else {
+      throw new Error('Like already performed')
+    }
   }
 }
 
