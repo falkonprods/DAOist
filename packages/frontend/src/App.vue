@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       isProfileModalOpen: false,
-      needsRefresh: false,
+      needsRefresh: '',
     }
   },
   methods: {

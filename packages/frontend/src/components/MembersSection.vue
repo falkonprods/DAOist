@@ -64,7 +64,6 @@ export default {
       prev: null,
       loggedInUserID: null,
       like: member => {
-        return this.$emit('like'),
         const toUser = member._id
         axios
           .get(`${VINZY_API_BASE_URI}/like?fromUser=${this.loggedInUserID}&toUser=${toUser}`)
@@ -74,7 +73,7 @@ export default {
             } else {
               member.likeCount++
             }
-            return
+            return this.$emit('like')
           })
           .catch(e => console.log(e))
       },
