@@ -15,9 +15,12 @@ class LikeService {
       params: [{ _id: fromUser }, { _id: toUser }],
       fields: { ost: 1 },
     })
-
-    await this.transactions.execute(this.actionID, fromUser, toUser, users)
-    await updateLikeMember.call(this, fromUser, toUser)
+    let updated = await updateLikeMember.call(this, fromUser, toUser)
+    if (updated.result.ok === 1 && updated.result.nModified === 1) {
+      return await this.transactions.execute(this.actionID, fromUser, toUser, users)
+    } else {
+      throw new Error('Like already performed')
+    }
   }
 
   // Reverse previously executed transaction
@@ -27,8 +30,12 @@ class LikeService {
       fields: { ost: 1 },
     })
 
-    await this.transactions.execute(this.actionID, toUser, fromUser, users)
-    await removeLikeMember.call(this, fromUser, toUser)
+    let updated = await removeLikeMember.call(this, fromUser, toUser)
+    if (updated.result.ok === 1 && updated.result.nModified === 1) {
+      return await this.transactions.execute(this.actionID, toUser, fromUser, users)
+    } else {
+      throw new Error('Like already performed')
+    }
   }
 }
 
@@ -37,7 +44,7 @@ async function updateLikeMember(fromUser, toUser) {
   let db = await connection.db()
   let collection = db.collection(DB_COLLECTION_USERS)
 
-  await collection.update(
+  return await collection.update(
     {
       _id: ObjectID(toUser),
       likes: { $ne: ObjectID(fromUser) },
@@ -53,7 +60,8 @@ async function removeLikeMember(fromUser, toUser) {
   let connection = await this.mongo()
   let db = await connection.db()
   let collection = db.collection(DB_COLLECTION_USERS)
-  await collection.update(
+
+  return await collection.update(
     {
       _id: ObjectID(toUser),
       likes: { $ne: ObjectID(fromUser) },

@@ -49,11 +49,13 @@ const VINZY_API_BASE_URI = 'https://vinzy.softwareapi.run'
 
 export default {
   name: 'HeaderProfileBar',
+  props: { needsRefresh: { type: String, default: '' } },
   data() {
     return {
       tokenBalance: 0,
       conversionRate: 0,
       pricePoint: 0,
+      wasRefreshed: false,
     }
   },
   computed: {
@@ -62,6 +64,13 @@ export default {
     // Calculates dollar equivalent: VIN > OST > USD
     dollarEquiv() {
       return ((this.tokenBalance / this.conversionRate) * this.pricePoint).toFixed(DEC_PRECISION)
+    },
+  },
+  watch: {
+    needsRefresh() {
+      if (this.needsRefresh) {
+        this.getProfileInfo()
+      }
     },
   },
   // Fetches posts when the component is created.

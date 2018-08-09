@@ -65,6 +65,7 @@ class TransactionsService {
     const res = await this.ost.services.transactions.execute(ostTransactionModel)
 
     if (res.success) {
+      console.log(res)
       return res
     }
 
