@@ -48,9 +48,13 @@ export default {
       prev: null,
       loggedInUserID: null,
       like:  (fromUser, toUser) => {
+
         axios
           .get(`${VINZY_API_BASE_URI}/like?fromUser=${fromUser}&toUser=${toUser}`)
-          .then(resp => console.log(resp.data))
+          .then(resp => {
+            console.log(resp.data)
+            return
+          })
           .catch(e => console.log(e))
       },
       load: url =>
