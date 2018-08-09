@@ -4,7 +4,7 @@
       <router-link
         v-if="!isLoggedIn"
         class="button  vinzy-buy-more"
-        to="/register-winery">Register winery</router-link>
+        to="/register-winery">Register</router-link>
     </div>
     <div class="navbar-item">
       <router-link
