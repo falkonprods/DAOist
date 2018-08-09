@@ -8,7 +8,7 @@
           required
           type="text"
           name="wineryName"
-          placeholder="Enter winery name">
+          placeholder="Enter name">
         <br >
         <input
           v-model="contactName"
