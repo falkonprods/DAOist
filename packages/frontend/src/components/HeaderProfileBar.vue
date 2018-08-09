@@ -16,10 +16,10 @@
     <a
       v-if="isLoggedIn"
       class="navbar-item"
-      href="">
+      href="#"
+      @click="openModal">
       {{ tokenBalance }} VINCOINS
       ( {{ dollarEquiv }} USD )
-      {{ transactions.length }} transactions
     </a>
 
     <div
@@ -54,7 +54,6 @@ export default {
       tokenBalance: 0,
       conversionRate: 0,
       pricePoint: 0,
-      transactions: [],
     }
   },
   computed: {
@@ -77,15 +76,25 @@ export default {
     // Fetches user balance and transactions info
     getProfileInfo() {
       axios
-        .get(`${VINZY_API_BASE_URI}/profile?token=${localStorage.getItem('token')}`, {})
+        .get(`${VINZY_API_BASE_URI}/profile`, {
+          params: {
+            token: localStorage.getItem('token'),
+            select: 'balance,token',
+          },
+        })
         .then(res => {
           this.tokenBalance = res.data.balance.token_balance
           this.conversionRate = res.data.token.conversion_factor
           this.pricePoint = res.data.price_points.OST.USD
-          this.transactions = res.data.transactions
           return
         })
         .catch(e => console.log(e))
+    },
+
+    // Open Profile Modal
+    openModal(event) {
+      event.preventDefault()
+      this.$emit('toggleModal', {})
     },
   },
 }

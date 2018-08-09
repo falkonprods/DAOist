@@ -35,14 +35,19 @@ function getUserIdFromToken(token) {
   return jwt.verify(token, process.env.JWT_SECRET).user.ost.id
 }
 
+// Get Vinzy user ID from token
+function getVinzyUserIdFromToken(token) {
+  return jwt.verify(token, process.env.JWT_SECRET).user._id
+}
+
 // Get user token balance
-async function getUserBalance(userID) {
-  return await balancesService.fetch(userID)
+async function getUserBalance(ostUserID) {
+  return await balancesService.fetch(ostUserID)
 }
 
 // Get user transactions
-async function getUserTransactions(userID) {
-  return await transactionsService.list(userID)
+async function getUserTransactions(ostUserID, page_no = 1, limit = 10) {
+  return await transactionsService.listToOrFromUser(ostUserID, { page_no, limit })
 }
 
 // Get Branded Token details and conversion rates
@@ -52,20 +57,37 @@ async function getTokenDetails() {
 
 module.exports.profile = async event => {
   const token = event.queryStringParameters.token
-  const userID = getUserIdFromToken(token)
+  const transactionsPage = event.queryStringParameters.transactionsPage
+  const transactionsPerPage = event.queryStringParameters.transactionsPerPage
+  const select = (event.queryStringParameters.select || 'balance,transactions,token').split(',')
+  const ostUserID = getUserIdFromToken(token)
+  const vinzyUserID = getVinzyUserIdFromToken(token)
+
+  const responseBody = { profile: { ostUserID, vinzyUserID } }
 
   try {
-    const balance = (await getUserBalance(userID)).data.balance
-    const transactions = (await getUserTransactions(userID)).data.transactions
-    const token = await getTokenDetails()
+    if (select.includes('balance')) {
+      responseBody.balance = (await getUserBalance(ostUserID)).data.balance
+    }
+
+    if (select.includes('transactions')) {
+      const transactions = await getUserTransactions(
+        ostUserID,
+        transactionsPage,
+        transactionsPerPage
+      )
+      responseBody.transactions = transactions.data.transactions
+      responseBody.transactions_next = transactions.data.meta.next_page_payload
+    }
+
+    if (select.includes('token')) {
+      const token = await getTokenDetails()
+      responseBody.token = token.data.token
+      responseBody.price_points = token.data.price_points
+    }
 
     apiGatewayResponse.statusCode = 200
-    apiGatewayResponse.body = JSON.stringify({
-      balance,
-      transactions,
-      token: token.data.token,
-      price_points: token.data.price_points,
-    })
+    apiGatewayResponse.body = JSON.stringify(responseBody)
   } catch (err) {
     apiGatewayResponse.body = JSON.stringify(err.message)
   }

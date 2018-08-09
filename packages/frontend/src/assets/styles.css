@@ -76,4 +76,6 @@ color:#fff;
  font-size:12px;
  font-weight: normal;
 }
-
+button {
+  cursor: pointer;
+}
