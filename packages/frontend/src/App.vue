@@ -21,7 +21,9 @@
       </section>
       <MembersSection />
     </div>
-    <ProfileModal :is-open="isProfileModalOpen"/>
+    <ProfileModal
+      :is-open="isProfileModalOpen"
+      @close="toggleProfileModal"/>
   </section>
 </template>
 

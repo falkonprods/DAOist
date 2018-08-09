@@ -41,8 +41,8 @@ async function getUserBalance(userID) {
 }
 
 // Get user transactions
-async function getUserTransactions(userID) {
-  return await transactionsService.list(userID)
+async function getUserTransactions(userID, page_no = 1, limit = 10) {
+  return await transactionsService.listToOrFromUser(userID, { page_no, limit })
 }
 
 // Get Branded Token details and conversion rates
@@ -52,10 +52,12 @@ async function getTokenDetails() {
 
 module.exports.profile = async event => {
   const token = event.queryStringParameters.token
-  const userID = getUserIdFromToken(token)
-  const responseBody = {}
-
+  const transactionsPage = event.queryStringParameters.transactionsPage
+  const transactionsPerPage = event.queryStringParameters.transactionsPerPage
   const select = (event.queryStringParameters.select || 'balance,transactions,token').split(',')
+  const userID = getUserIdFromToken(token)
+
+  const responseBody = { profile: { userID } }
 
   try {
     if (select.includes('balance')) {
@@ -63,7 +65,9 @@ module.exports.profile = async event => {
     }
 
     if (select.includes('transactions')) {
-      responseBody.transactions = (await getUserTransactions(userID)).data.transactions
+      const transactions = await getUserTransactions(userID, transactionsPage, transactionsPerPage)
+      responseBody.transactions = transactions.data.transactions
+      responseBody.transactions_next = transactions.data.meta.next_page_payload
     }
 
     if (select.includes('token')) {
