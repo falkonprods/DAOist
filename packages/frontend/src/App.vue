@@ -14,15 +14,19 @@
                 <h1 class="heading">vinzy</h1>
               </a>
             </div>
-            <HeaderProfileBar @toggleModal="toggleProfileModal"/>
+            <HeaderProfileBar
+              :needs-refresh="needsRefresh"
+              @toggleModal="toggleProfileModal"
+            />
           </nav>
           <HeaderCounter />
         </div>
       </section>
-      <MembersSection />
+      <MembersSection @like="updateProfile" />
     </div>
     <ProfileModal
       :is-open="isProfileModalOpen"
+      :needs-refresh="needsRefresh"
       @close="toggleProfileModal"/>
   </section>
 </template>
@@ -46,6 +50,7 @@ export default {
   data() {
     return {
       isProfileModalOpen: false,
+      needsRefresh: false,
     }
   },
   methods: {
@@ -54,6 +59,9 @@ export default {
     },
     toggleProfileModal() {
       this.isProfileModalOpen = !this.isProfileModalOpen
+    },
+    updateProfile() {
+      this.needsRefresh = new Date().toTimeString()
     },
   },
 }
