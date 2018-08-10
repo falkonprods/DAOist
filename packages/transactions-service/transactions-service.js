@@ -3,7 +3,7 @@ class TransactionsService {
     this.ost = ost
   }
 
-  // List ALL transactions
+  // List all transactions
   async list({ page_no, limit, order, order_by } = {}) {
     const res = await this.ost.services.transactions.list({ page_no, limit, order, order_by })
 
@@ -12,29 +12,6 @@ class TransactionsService {
     }
 
     throw new Error(res.err.msg)
-  }
-
-  // List transactions FROM the user
-  async listFromUser(userID, { page_no, limit, order, order_by } = {}) {
-    const res = await this.list({ page_no, limit, order, order_by })
-    res.data.transactions = res.data.transactions.filter(t => t.from_user_id === userID)
-    return res
-  }
-
-  // List transactions TO the user
-  async listToUser(userID, { page_no, limit, order, order_by } = {}) {
-    const res = await this.list({ page_no, limit, order, order_by })
-    res.data.transactions = res.data.transactions.filter(t => t.to_user_id === userID)
-    return res
-  }
-
-  // List transaction TO or FROM the user
-  async listToOrFromUser(userID, { page_no, limit, order, order_by } = {}) {
-    const res = await this.list({ page_no, limit, order, order_by })
-    res.data.transactions = res.data.transactions.filter(t => {
-      return t.to_user_id === userID || t.from_user_id === userID
-    })
-    return res
   }
 
   // Get specific transaction
