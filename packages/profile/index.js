@@ -13,8 +13,9 @@ const ost = new OSTSDK({
 })
 
 const tokenService = require('token-service')(ost)
-const balancesService = require('balances-service')(ost)
+const usersService = require('users-service')(ost)
 const ledgerService = require('ledger-service')(ost)
+const balancesService = require('balances-service')(ost)
 
 const CacheControlExpirationTime = 86400
 
@@ -55,6 +56,30 @@ async function getTokenDetails() {
   return await tokenService.fetchFiltered()
 }
 
+// Fetch names of users involved in transactions
+async function mapUserNamesToTransactions(transactions, excludeIDs = []) {
+  // Grab an array of both recepients and senders
+  const fromUserIDs = transactions.map(t => t.from_user_id)
+  const toUserIDs = transactions.map(t => t.to_user_id)
+
+  // Exclude unwanted IDs
+  const userIDs = [...fromUserIDs, ...toUserIDs].filter(id => !excludeIDs.includes(id))
+
+  // Setting the limit to the max possible value as transaction are already paginated
+  const users = (await usersService.fetch({ id: userIDs.join(','), limit: 100 })).data.users
+
+  // Assign user name to related transaction
+  for (const transaction of transactions) {
+    for (const user of users) {
+      if (transaction.from_user_id === user.id || transaction.to_user_id === user.id) {
+        transaction.involved_user_name = user.name
+      }
+    }
+  }
+
+  return transactions
+}
+
 module.exports.profile = async event => {
   const token = event.queryStringParameters.token
   const transactionsPage = event.queryStringParameters.transactionsPage
@@ -71,11 +96,12 @@ module.exports.profile = async event => {
     }
 
     if (select.includes('transactions')) {
-      responseBody.transactions = (await getUserTransactions(
+      const transactions = (await getUserTransactions(
         ostUserID,
         transactionsPage,
         transactionsPerPage
       )).data.transactions
+      responseBody.transactions = await mapUserNamesToTransactions(transactions, [ostUserID])
     }
 
     if (select.includes('token')) {
