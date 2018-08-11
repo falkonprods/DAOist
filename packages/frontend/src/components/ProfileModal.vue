@@ -64,11 +64,16 @@
           </tbody>
         </table>
         <button
+          :disabled="isOnFirstTransactionsPage"
           class="prev"
           @click="prevTransactions">Previous</button>
         <button
+          :disabled="isOnLastTransactionsPage"
           class="next"
           @click="nextTransactions">Next</button>
+        <button
+          class="refresh"
+          @click="refresh">Refresh</button>
       </template>
     </template>
   </BaseModal>
@@ -92,9 +97,21 @@ export default {
       balance: {},
       pricePoints: {},
       transactions: [],
+      transactionsStack: [],
       transactionsPage: 1,
       transactionsLimitReached: false,
+      requestPending: false,
     }
+  },
+  computed: {
+    isOnFirstTransactionsPage() {
+      return this.transactionsPage === 1
+    },
+    isOnLastTransactionsPage() {
+      return (
+        this.transactionsLimitReached && this.transactionsPage === this.transactionsStack.length
+      )
+    },
   },
   methods: {
     // Functions to run when modal opens
@@ -116,7 +133,13 @@ export default {
 
     // Fetch profile data
     getProfileData(select = 'balance,token,transactions') {
-      axios
+      if (this.requestPending) {
+        return
+      }
+
+      this.requestPending = true
+
+      return axios
         .get(`${VINZY_API_BASE_URI}/profile`, {
           params: {
             token: localStorage.getItem('token'),
@@ -132,7 +155,8 @@ export default {
 
           const transactions = res.data.transactions
           if (transactions.length) {
-            this.transactions = transactions
+            this.transactionsStack.push(transactions)
+            this.getTransactionsFromCache()
             this.transactionsLimitReached = false
           } else {
             this.transactionsPage--
@@ -142,25 +166,57 @@ export default {
           return
         })
         .catch(e => console.log(e))
+        .then(() => {
+          this.requestPending = false
+          return
+        })
+    },
+
+    // Get previously fetched transactions
+    getTransactionsFromCache() {
+      const cache = this.transactionsStack[this.transactionsPage - 1]
+
+      if (cache) {
+        this.transactions = cache
+        return true
+      }
+
+      return false
+    },
+
+    refresh() {
+      this.transactionsStack = []
+      this.transactionsPage = 1
+      this.getProfileData()
     },
 
     // Fetch previous transactions page
     prevTransactions() {
-      if (this.transactionsPage === 1) {
+      if (this.isOnFirstTransactionsPage) {
         return
       }
 
       this.transactionsPage--
+
+      if (this.getTransactionsFromCache()) {
+        return
+      }
+
       this.getProfileData('transactions')
     },
 
     // Fetch next transactions page
     nextTransactions() {
-      if (this.transactionsLimitReached) {
+      if (this.isOnLastTransactionsPage) {
         return
       }
 
       this.transactionsPage++
+
+      if (this.getTransactionsFromCache()) {
+        return
+      }
+
       this.getProfileData('transactions')
     },
   },
@@ -185,5 +241,9 @@ export default {
 }
 .prev {
   float: left;
+}
+.refresh {
+  display: block;
+  margin: 0 auto;
 }
 </style>
