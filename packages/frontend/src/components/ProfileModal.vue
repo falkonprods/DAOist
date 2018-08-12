@@ -40,6 +40,7 @@
         <table class="table is-fullwidth capitalize">
           <thead>
             <th>ID</th>
+            <th>Action</th>
             <th>VIN Amount</th>
             <th>Fee</th>
             <th>Status</th>
@@ -51,6 +52,7 @@
               v-for="t in transactions"
               :key="t.id">
               <td>{{ t.id.slice(0, 4) }}</td>
+              <td>{{ t.action.name }}</td>
               <td>{{ t.amount || '&mdash;' }}</td>
               <td>{{ t.transaction_fee || '&mdash;' }}</td>
               <td :class="t.status === 'complete' ? 'success' : 'fail'">{{ t.status }}</td>
@@ -132,7 +134,7 @@ export default {
     },
 
     // Fetch profile data
-    getProfileData(select = 'balance,token,transactions') {
+    getProfileData(select = 'balance,token,transactions,actions') {
       if (this.requestPending) {
         return
       }
@@ -202,7 +204,7 @@ export default {
         return
       }
 
-      this.getProfileData('transactions')
+      this.getProfileData('transactions,actions')
     },
 
     // Fetch next transactions page
@@ -217,7 +219,7 @@ export default {
         return
       }
 
-      this.getProfileData('transactions')
+      this.getProfileData('transactions,actions')
     },
   },
 }
