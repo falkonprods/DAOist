@@ -40,6 +40,7 @@
         <table class="table is-fullwidth capitalize">
           <thead>
             <th>ID</th>
+            <th>Action</th>
             <th>VIN Amount</th>
             <th>Fee</th>
             <th>Status</th>
@@ -51,6 +52,7 @@
               v-for="t in transactions"
               :key="t.id">
               <td>{{ t.id.slice(0, 4) }}</td>
+              <td>{{ t.action.name }}</td>
               <td>{{ t.amount || '&mdash;' }}</td>
               <td>{{ t.transaction_fee || '&mdash;' }}</td>
               <td :class="t.status === 'complete' ? 'success' : 'fail'">{{ t.status }}</td>
@@ -64,11 +66,16 @@
           </tbody>
         </table>
         <button
+          :disabled="isOnFirstTransactionsPage"
           class="prev"
           @click="prevTransactions">Previous</button>
         <button
+          :disabled="isOnLastTransactionsPage"
           class="next"
           @click="nextTransactions">Next</button>
+        <button
+          class="refresh"
+          @click="refresh">Refresh</button>
       </template>
     </template>
   </BaseModal>
@@ -92,9 +99,21 @@ export default {
       balance: {},
       pricePoints: {},
       transactions: [],
+      transactionsStack: [],
       transactionsPage: 1,
       transactionsLimitReached: false,
+      requestPending: false,
     }
+  },
+  computed: {
+    isOnFirstTransactionsPage() {
+      return this.transactionsPage === 1
+    },
+    isOnLastTransactionsPage() {
+      return (
+        this.transactionsLimitReached && this.transactionsPage === this.transactionsStack.length
+      )
+    },
   },
   methods: {
     // Functions to run when modal opens
@@ -115,8 +134,14 @@ export default {
     },
 
     // Fetch profile data
-    getProfileData(select = 'balance,token,transactions') {
-      axios
+    getProfileData(select = 'balance,token,transactions,actions') {
+      if (this.requestPending) {
+        return
+      }
+
+      this.requestPending = true
+
+      return axios
         .get(`${VINZY_API_BASE_URI}/profile`, {
           params: {
             token: localStorage.getItem('token'),
@@ -132,7 +157,8 @@ export default {
 
           const transactions = res.data.transactions
           if (transactions.length) {
-            this.transactions = transactions
+            this.transactionsStack.push(transactions)
+            this.getTransactionsFromCache()
             this.transactionsLimitReached = false
           } else {
             this.transactionsPage--
@@ -142,26 +168,58 @@ export default {
           return
         })
         .catch(e => console.log(e))
+        .then(() => {
+          this.requestPending = false
+          return
+        })
+    },
+
+    // Get previously fetched transactions
+    getTransactionsFromCache() {
+      const cache = this.transactionsStack[this.transactionsPage - 1]
+
+      if (cache) {
+        this.transactions = cache
+        return true
+      }
+
+      return false
+    },
+
+    refresh() {
+      this.transactionsStack = []
+      this.transactionsPage = 1
+      this.getProfileData()
     },
 
     // Fetch previous transactions page
     prevTransactions() {
-      if (this.transactionsPage === 1) {
+      if (this.isOnFirstTransactionsPage) {
         return
       }
 
       this.transactionsPage--
-      this.getProfileData('transactions')
+
+      if (this.getTransactionsFromCache()) {
+        return
+      }
+
+      this.getProfileData('transactions,actions')
     },
 
     // Fetch next transactions page
     nextTransactions() {
-      if (this.transactionsLimitReached) {
+      if (this.isOnLastTransactionsPage) {
         return
       }
 
       this.transactionsPage++
-      this.getProfileData('transactions')
+
+      if (this.getTransactionsFromCache()) {
+        return
+      }
+
+      this.getProfileData('transactions,actions')
     },
   },
 }
@@ -185,5 +243,9 @@ export default {
 }
 .prev {
   float: left;
+}
+.refresh {
+  display: block;
+  margin: 0 auto;
 }
 </style>

@@ -16,6 +16,7 @@ const tokenService = require('token-service')(ost)
 const usersService = require('users-service')(ost)
 const ledgerService = require('ledger-service')(ost)
 const balancesService = require('balances-service')(ost)
+const actionsService = require('actions-service')(ost)
 
 const CacheControlExpirationTime = 86400
 
@@ -56,6 +57,25 @@ async function getTokenDetails() {
   return await tokenService.fetchFiltered()
 }
 
+// Fetch the action details of transactions
+async function mapActionsDetailsToTransactions(transactions) {
+  const actionIDs = transactions.map(t => t.action_id)
+  const actions =
+    actionIDs.length > 1
+      ? (await actionsService.list({ id: actionIDs.join(','), limit: 100 })).data.actions
+      : [(await actionsService.get(actionIDs[0])).data.action]
+
+  for (const t of transactions) {
+    for (const a of actions) {
+      if (t.action_id === Number(a.id)) {
+        t.action = a
+      }
+    }
+  }
+
+  return transactions
+}
+
 // Fetch names of users involved in transactions
 async function mapUserNamesToTransactions(transactions, excludeIDs = []) {
   // Grab an array of both recepients and senders
@@ -69,10 +89,10 @@ async function mapUserNamesToTransactions(transactions, excludeIDs = []) {
   const users = (await usersService.fetch({ id: userIDs.join(','), limit: 100 })).data.users
 
   // Assign user name to related transaction
-  for (const transaction of transactions) {
-    for (const user of users) {
-      if (transaction.from_user_id === user.id || transaction.to_user_id === user.id) {
-        transaction.involved_user_name = user.name
+  for (const t of transactions) {
+    for (const u of users) {
+      if (t.from_user_id === u.id || t.to_user_id === u.id) {
+        t.involved_user_name = u.name
       }
     }
   }
@@ -84,9 +104,11 @@ module.exports.profile = async event => {
   const token = event.queryStringParameters.token
   const transactionsPage = event.queryStringParameters.transactionsPage
   const transactionsPerPage = event.queryStringParameters.transactionsPerPage
-  const select = (event.queryStringParameters.select || 'balance,transactions,token').split(',')
   const ostUserID = getUserIdFromToken(token)
   const vinzyUserID = getVinzyUserIdFromToken(token)
+  const select = (event.queryStringParameters.select || 'balance,transactions,token,actions').split(
+    ','
+  )
 
   const responseBody = { profile: { ostUserID, vinzyUserID } }
 
@@ -101,7 +123,12 @@ module.exports.profile = async event => {
         transactionsPage,
         transactionsPerPage
       )).data.transactions
+
       responseBody.transactions = await mapUserNamesToTransactions(transactions, [ostUserID])
+
+      if (select.includes('actions')) {
+        responseBody.transactions = await mapActionsDetailsToTransactions(responseBody.transactions)
+      }
     }
 
     if (select.includes('token')) {

@@ -10,6 +10,7 @@
     "balances-service": "file:../../packages/balances-service",
     "ledger-service": "file:../../packages/ledger-service",
     "users-service": "file:../../packages/users-service",
+    "actions-service": "file:../../packages/actions-service",
     "jsonwebtoken": "^8.2.1",
     "@ostdotcom/ost-sdk-js": "^1.1.0"
   },
