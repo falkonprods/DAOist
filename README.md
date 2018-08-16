@@ -6,6 +6,10 @@ The way our system works is that “members” can register for the organization
 
 The most critical aspect to our application is the use of ideas. Any member can create an idea. An idea is an actionable unit of work — it could be building a web site, launching a marketing plane, developing a feature — that has a cost and can be executed. A cost value in tokens (using USD equivalents, if desired). Members can vote on ideas by staking their tokens against it. Once the value is reached, then the tokens can be released to the person who posted the idea to execute.
 
+## Screenshot
+
+![DAOist Screenshot](https://www.dropbox.com/s/cy1o19e7tfxh0jc/DAOist-desktop-app.png)
+
 ## Packages
 This project contains the following packages:
 
