@@ -8,7 +8,7 @@ The most critical aspect to our application is the use of ideas. Any member can 
 
 ## Screenshot
 
-![DAOist Screenshot](https://www.dropbox.com/s/cy1o19e7tfxh0jc/DAOist-desktop-app.png)
+![DAOist Screenshot](https://drive.google.com/open?id=1WnJn9lUYrbmrVWiojjX8FHPqxCppWoxI)
 
 ## Packages
 This project contains the following packages:
