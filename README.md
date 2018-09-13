@@ -1,6 +1,6 @@
 # DAOist
 
-[![image title](https://travis-ci.org/falkonprods/DAOist.png?branch=feature/travis-cd)](https://travis-ci.org/falkonprods/DAOist)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)  
+[![image title](https://travis-ci.org/falkonprods/DAOist.png?branch=feature/travis-cd)](https://travis-ci.org/falkonprods/DAOist)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)    [![MIT Licensed](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/ModusCreateOrg/capsule/blob/OAS-15_documentation/LICENSE)
 
 Welcome to the DAOist. We are developing a new way for groups to organize. This concept, called Decentralized Autonomous Organizations, uses tokens to measure commitment and create an organization that is setup to empower action without having to know or trust anyone in the organization. This solves the problem of getting groups of people together that have a similar interest but don’t know one another well enough to trust and make decisions well — and to be able to do this remotely.
 
